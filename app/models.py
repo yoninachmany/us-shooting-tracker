@@ -1,5 +1,5 @@
-from app import db
 from geoalchemy2 import Geometry
+from app import db
 
 
 class Store(db.Model):
