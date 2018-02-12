@@ -1,23 +1,37 @@
-from datetime import datetime
 from app import db
+from geoalchemy2 import Geometry
 
 
-class User(db.Model):
+class Store(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), index=True, unique=True)
-    email = db.Column(db.String(120), index=True, unique=True)
-    password_hash = db.Column(db.String(128))
-    posts = db.relationship('Post', backref='author', lazy='dynamic')
+    phoneFormatted = db.Column(db.String(14))
+    phone = db.Column(db.String(10))
+    address = db.Column(db.String(64))
+    city = db.Column(db.String(64))
+    country = db.Column(db.String(64))
+    crossStreet = db.Column(db.String(64))
+    postalCode = db.Column(db.String(5))
+    state = db.Column(db.String(4))
+    geom = db.Column(Geometry('POINT', srid=4326))
+
+
+    @staticmethod
+    def add_sweetgreen_geojson_data():
+        from geoalchemy2.shape import from_shape
+        import geojson
+        from shapely.geometry import asShape
+        from sqlalchemy.exc import IntegrityError
+
+        data = geojson.load(open('sweetgreen.geojson'))
+        for feature in data['features']:
+            s = Store(**feature['properties'])
+            del feature['properties']
+            s.geom = from_shape(asShape(feature))
+            db.session.add(s)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
 
     def __repr__(self):
-        return '<User {}>'.format(self.username)
-
-
-class Post(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String(140))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-    def __repr__(self):
-        return '<Post {}>'.format(self.body)
+        return '<Store {}>'.format(self.id)
