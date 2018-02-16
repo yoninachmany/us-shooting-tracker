@@ -9,3 +9,13 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 from app import routes, models
+
+
+@app.shell_context_processor
+def make_shell_context():
+    return {'app': app, 'db': db, 'Store': models.Store}
+
+
+@app.cli.command()
+def populate():
+    models.Store.add_sweetgreen_geojson_data()
