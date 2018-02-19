@@ -1,8 +1,8 @@
 """stores table
 
-Revision ID: b68f9af36f0c
+Revision ID: 29e283123c41
 Revises: 
-Create Date: 2018-02-12 15:26:59.956423
+Create Date: 2018-02-16 13:56:49.395688
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ import geoalchemy2 as ga
 
 
 # revision identifiers, used by Alembic.
-revision = 'b68f9af36f0c'
+revision = '29e283123c41'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -29,7 +29,7 @@ def upgrade():
     sa.Column('crossStreet', sa.String(length=64), nullable=True),
     sa.Column('postalCode', sa.String(length=5), nullable=True),
     sa.Column('state', sa.String(length=4), nullable=True),
-    sa.Column('geom', ga.types.Geometry(geometry_type='POINT', srid=4326), nullable=True),
+    sa.Column('geom', ga.types.Geometry(geometry_type='POINT', srid=0), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###

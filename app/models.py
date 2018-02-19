@@ -12,21 +12,21 @@ class Store(db.Model):
     crossStreet = db.Column(db.String(64))
     postalCode = db.Column(db.String(5))
     state = db.Column(db.String(4))
-    geom = db.Column(Geometry('POINT', srid=4326))
-
+    geom = db.Column(Geometry('POINT', srid=0))
 
     @staticmethod
     def add_sweetgreen_geojson_data():
-        from geoalchemy2.shape import from_shape
-        import geojson
-        from shapely.geometry import asShape
         from sqlalchemy.exc import IntegrityError
+        import geojson
+        from shapely.geometry import shape
 
         data = geojson.load(open('sweetgreen.geojson'))
         for feature in data['features']:
-            s = Store(**feature['properties'])
-            del feature['properties']
-            s.geom = from_shape(asShape(feature))
+            properties = feature['properties']
+            print(properties)
+            s = Store(**properties)
+            geom = feature['geometry']
+            s.geom = shape(geom).wkt
             db.session.add(s)
             try:
                 db.session.commit()
