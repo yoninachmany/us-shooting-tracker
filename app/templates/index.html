@@ -319,15 +319,11 @@
     // Add the data to your map as a layer
     map.addLayer({
       "id": "locations",
-      "type": "symbol",
+      "type": "circle",
       // Add a GeoJSON source containing place coordinates and information.
       "source": {
         "type": "geojson",
         "data": stores
-      },
-      "layout": {
-        "icon-image": "restaurant-15",
-        "icon-allow-overlap": true,
       }
     });
     // Initialize the list
@@ -384,7 +380,7 @@
 
     var popup = new mapboxgl.Popup({closeOnClick: false})
       .setLngLat(currentFeature.geometry.coordinates)
-      .setHTML('<h3>Sweetgreen</h3>' +
+      .setHTML('<h3>Shooting</h3>' +
         '<h4>' + currentFeature.properties.address + '</h4>')
       .addTo(map);
   }
