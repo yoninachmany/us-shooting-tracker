@@ -424,12 +424,12 @@
       link.href = '#';
       link.className = 'title';
       link.dataPosition = i;
-      link.innerHTML = prop['date-and-time'].city.value;
+      link.innerHTML = prop['articleTitle'];
 
       // Create a new div with the class 'details' for each store
       // and fill it with the city and phone number
       var details = listing.appendChild(document.createElement('div'));
-      details.innerHTML = "<a href=" + prop['articleUrl'] + ">" + prop['articleTitle'] + "</a>";
+      details.innerHTML = "<a href=" + prop['articleUrl'] + ">" + prop['articleUrl'] + "</a>";
 
 
       link.addEventListener('click', function(e) {
