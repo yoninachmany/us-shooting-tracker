@@ -173,6 +173,28 @@
     border-bottom-color: #91c949;
   }
 
+.session {
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.row {
+  height: 12px;
+  width: 100%;
+}
+
+.colors {
+  background: linear-gradient(to right, #2dc4b2, #3bb3c3, #669ec4, #8b88b6, #a2719b, #aa5e79);
+  margin-bottom: 5px;
+}
+
+.label {
+  width: 15%;
+  display: inline-block;
+  text-align: center;
+}
+
+
   </style>
 </head>
 
@@ -181,7 +203,22 @@
     <div class='heading'>
         <h1>US shootings from <a href="http://gun-violence.org/">Gun Violence Database</a></h1>
     </div>
-    <div id='listings' class='listings'></div>
+    <div id='listings' class='listings'>
+        <div class='session'>
+          <h2>Casualty</h2>
+          <div class='row colors'>
+          </div>
+          <div class='row labels'>
+            <div class='label'>0</div>
+            <div class='label'>1</div>
+            <div class='label'>2</div>
+            <div class='label'>3</div>
+            <div class='label'>4</div>
+            <div class='label'>5+</div>
+          </div>
+        </div>
+
+    </div>
   </div>
 
   <div id='map' class='map'> </div>
