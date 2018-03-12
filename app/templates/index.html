@@ -5,7 +5,7 @@
 
 <head>
   <meta charset='utf-8' />
-  <title>Store Locator</title>
+  <title>US shootings</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
   <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
@@ -173,15 +173,55 @@
     border-bottom-color: #91c949;
   }
 
+.session {
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.row {
+  height: 12px;
+  width: 100%;
+}
+
+.colors {
+  background: linear-gradient(to right, #2dc4b2, #3bb3c3, #669ec4, #8b88b6, #a2719b, #aa5e79);
+  margin-bottom: 5px;
+}
+
+.label {
+  width: 15%;
+  display: inline-block;
+  text-align: center;
+}
+
+
   </style>
 </head>
 
 <body>
   <div class='sidebar'>
     <div class='heading'>
-      <h1>Our locations</h1>
+        <h1>US shootings from <a href="http://gun-violence.org/">Gun Violence Database</a></h1>
     </div>
-    <div id='listings' class='listings'></div>
+    <div id='listings' class='listings'>
+        <div class='session'>
+          <h3>Casualty</h3>
+          <div class='row colors'>
+          </div>
+          <div class='row labels'>
+            <div class='label'>0</div>
+            <div class='label'>1</div>
+            <div class='label'>2</div>
+            <div class='label'>3</div>
+            <div class='label'>4</div>
+            <div class='label'>5+</div>
+          </div>
+        </div>
+        <div class='session' id='sliderbar'>
+          <h3>Hour: <label id='active-hour'>12PM</label></h3>
+          <input id='slider' class='row' type='range' min='0' max='23' step='1' value='12' />
+        </div>
+    </div>
   </div>
 
   <div id='map' class='map'> </div>
@@ -205,9 +245,9 @@
     // style URL
     style: 'mapbox://styles/mapbox/light-v9',
     // initial position in [long, lat] format
-    center: [-77.034084142948, 38.909671288923],
+    center: [-97.0000, 38.0000],
     // initial zoom
-    zoom: 13
+    zoom: 3.5
   });
 
   // Add zoom and rotation controls to the map.
@@ -219,213 +259,113 @@
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [-77.034084142948,
-          38.909671288923
-        ]
+        "coordinates": [-90.7454215, 29.578277]
       },
       "properties": {
-        "phoneFormatted": "(202) 234-7336",
-        "phone": "2022347336",
-        "address": "1471 P St NW",
-        "city": "Washington DC",
-        "country": "United States",
-        "crossStreet": "at 15th St NW",
-        "postalCode": "20005",
-        "state": "D.C."
-      }
+      "articleTitle": "Police Shoot, Kill Theft Suspect in Houma - FOX29 Lake Charles",
+      "articleUrl": "http://www.watchfox29.com/story/29662135/police-shoot-kill-theft-suspect-in-houma",
+      "circumstances":{"number-of-shots-fired":{"endIndex":-1,"startIndex":-1,"value":""},"type-of-gun":{"endIndex":-1,"startIndex":-1,"value":""}},"date-and-time":{"city":{"endIndex":373,"startIndex":368,"value":"Houma"},"clock-time":{"endIndex":-1,"startIndex":-1,"value":""},"date":"","details":{"endIndex":576,"startIndex":536,"value":"Officers open fired, killing the suspect"},"state":"Louisiana","time-day":{"endIndex":173,"startIndex":159,"value":"Monday evening"}},"radio1":{"The firearm was used during another crime.":"Not mentioned","The firearm was used in self defense.":"Yes","The incident was a case of domestic violence.":"No","The shooter and the victim knew each other.":"No"},"radio2":{"Alcohol was involved.":"Not mentioned","Drugs (other than alcohol) were involved.":"Not mentioned","The shooting was a suicide or suicide attempt.":"No","The shooting was self-directed.":"No"},"radio3":{"The firearm was owned by the victim/victims family.":"No","The firearm was stolen.":"Not mentioned","The shooting was by a police officer.":"Yes","The shooting was directed at a police officer.":"No","The shooting was unintentional.":"No"},"shooter-section":[{"age":{"endIndex":-1,"startIndex":-1,"value":""},"gender":"","name":{"endIndex":30,"startIndex":0,"value":"Eight law enforcement officers"},"race":{"endIndex":-1,"startIndex":-1,"value":""}}],"victim-section":[{"age":{"endIndex":99,"startIndex":151,"value":"45-year-old"},"gender":"Male","name":{"endIndex":255,"startIndex":243,"value":"Jean Falgout"},"race":{"endIndex":-1,"startIndex":-1,"value":""},"victim-was":["killed"]}]}
+
     }, {
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [-77.049766,
-          38.900772
-        ]
+        "coordinates": [-81.9023382, 26.6186168]
       },
       "properties": {
-        "phoneFormatted": "(202) 507-8357",
-        "phone": "2025078357",
-        "address": "2221 I St NW",
-        "city": "Washington DC",
-        "country": "United States",
-        "crossStreet": "at 22nd St NW",
-        "postalCode": "20037",
-        "state": "D.C."
-      }
+      "articleTitle": "12-year-old shot three times, suspect on the loose | WINK NEWS",
+      "articleUrl": "http://www.winknews.com/2015/08/02/12-year-old-shot-three-times-suspect-on-the-loose/",
+      "circumstances":{"number-of-shots-fired":{"endIndex":493,"startIndex":477,"value":"shot three times"},"type-of-gun":{"endIndex":-1,"startIndex":-1,"value":""}},"date-and-time":{"city":{"endIndex":1089,"startIndex":1079,"value":"Fort Myers"},"clock-time":{"endIndex":-1,"startIndex":-1,"value":""},"date":"","details":{"endIndex":-1,"startIndex":-1,"value":""},"state":"Dunbar","time-day":{"endIndex":226,"startIndex":212,"value":"Saturday night"}},"radio1":{"The firearm was used during another crime.":"No","The firearm was used in self defense.":"No","The incident was a case of domestic violence.":"Yes","The shooter and the victim knew each other.":"No"},"radio2":{"Alcohol was involved.":"No","Drugs (other than alcohol) were involved.":"No","The shooting was a suicide or suicide attempt.":"No","The shooting was self-directed.":"No"},"radio3":{"The firearm was owned by the victim/victims family.":"No","The firearm was stolen.":"No","The shooting was by a police officer.":"No","The shooting was directed at a police officer.":"No","The shooting was unintentional.":"No"},"shooter-section":[{"age":{"endIndex":-1,"startIndex":-1,"value":""},"gender":"Female","name":{"endIndex":-1,"startIndex":-1,"value":""},"race":{"endIndex":-1,"startIndex":-1,"value":""}}],"victim-section":[{"age":{"endIndex":32,"startIndex":21,"value":"12-year-old"},"gender":"Female","name":{"endIndex":113,"startIndex":101,"value":"Luxury Vance"},"race":{"endIndex":-1,"startIndex":-1,"value":""},"victim-was":["injured","hospitalize"]}]}
     }, {
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [-77.043929,
-          38.910525
-        ]
+        "coordinates": [-90.2509738, 35.1288636]
       },
       "properties": {
-        "phoneFormatted": "(202) 387-9338",
-        "phone": "2023879338",
-        "address": "1512 Connecticut Ave NW",
-        "city": "Washington DC",
-        "country": "United States",
-        "crossStreet": "at Dupont Circle",
-        "postalCode": "20036",
-        "state": "D.C."
-      }
+      "articleTitle": "MPD Officer killed in the line of duty identified | WREG.com",
+      "articleUrl": "http://wreg.com/2015/08/02/mpd-officer-killed-in-the-line-of-duty-identified/",
+      "circumstances":{"number-of-shots-fired":{"endIndex":-1,"startIndex":-1,"value":""},"type-of-gun":{"endIndex":-1,"startIndex":-1,"value":""}},"date-and-time":{"city":{"endIndex":7,"startIndex":0,"value":"MEMPHIS"},"clock-time":{"endIndex":226,"startIndex":218,"value":"9:15 p.m"},"date":"","details":{"endIndex":209,"startIndex":117,"value":"According to MPD, Sean Bolton, 33, was conducting a traffic stop when he was fatally wounded"},"state":"Tenn","time-day":{"endIndex":-1,"startIndex":-1,"value":""}},"radio1":{"The firearm was used during another crime.":"Not mentioned","The firearm was used in self defense.":"Not mentioned","The incident was a case of domestic violence.":"No","The shooter and the victim knew each other.":"No"},"radio2":{"Alcohol was involved.":"Not mentioned","Drugs (other than alcohol) were involved.":"Not mentioned","The shooting was a suicide or suicide attempt.":"No","The shooting was self-directed.":"No"},"radio3":{"The firearm was owned by the victim/victims family.":"No","The firearm was stolen.":"Not mentioned","The shooting was by a police officer.":"No","The shooting was directed at a police officer.":"Yes","The shooting was unintentional.":"No"},"shooter-section":[{"age":{"endIndex":-1,"startIndex":-1,"value":""},"gender":"","name":{"endIndex":-1,"startIndex":-1,"value":""},"race":{"endIndex":-1,"startIndex":-1,"value":""}}],"victim-section":[{"age":{"endIndex":151,"startIndex":148,"value":"33,"},"gender":"Male","name":{"endIndex":146,"startIndex":135,"value":"Sean Bolton"},"race":{"endIndex":-1,"startIndex":-1,"value":""},"victim-was":["killed"]}]}
     }, {
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [-77.0672,
-          38.90516896
-        ]
+        "coordinates": [-77.5633014, 37.5246403]
       },
       "properties": {
-        "phoneFormatted": "(202) 337-9338",
-        "phone": "2023379338",
-        "address": "3333 M St NW",
-        "city": "Washington DC",
-        "country": "United States",
-        "crossStreet": "at 34th St NW",
-        "postalCode": "20007",
-        "state": "D.C."
-      }
+      "articleTitle": "Person on bike shot in the Fan - NBC12 - WWBT - Richmond, VA News On Your Side",
+      "articleUrl": "http://www.nbc12.com/story/29692846/",
+      "circumstances":{"number-of-shots-fired":{"endIndex":-1,"startIndex":-1,"value":""},"type-of-gun":{"endIndex":-1,"startIndex":-1,"value":""}},"date-and-time":{"city":{"endIndex":8,"startIndex":0,"value":"Richmond"},"clock-time":{"endIndex":108,"startIndex":92,"value":"around 3:15 a.m."},"date":"","details":{"endIndex":362,"startIndex":250,"value":" The victim says a vehicle ran up on him and opened fire. Police do not have\u00a0a suspect description at this time."},"state":"","time-day":{"endIndex":-1,"startIndex":-1,"value":""}},"radio1":{"The firearm was used during another crime.":"Not mentioned","The firearm was used in self defense.":"No","The incident was a case of domestic violence.":"No","The shooter and the victim knew each other.":"No"},"radio2":{"Alcohol was involved.":"Not mentioned","Drugs (other than alcohol) were involved.":"Not mentioned","The shooting was a suicide or suicide attempt.":"No","The shooting was self-directed.":"No"},"radio3":{"The firearm was owned by the victim/victims family.":"No","The firearm was stolen.":"Not mentioned","The shooting was by a police officer.":"No","The shooting was directed at a police officer.":"No","The shooting was unintentional.":"Not mentioned"},"shooter-section":[{"age":{"endIndex":-1,"startIndex":-1,"value":""},"gender":"","name":{"endIndex":-1,"startIndex":-1,"value":""},"race":{"endIndex":-1,"startIndex":-1,"value":""}}],"victim-section":[{"age":{"endIndex":-1,"startIndex":-1,"value":""},"gender":"Male","name":{"endIndex":-1,"startIndex":-1,"value":""},"race":{"endIndex":-1,"startIndex":-1,"value":""},"victim-was":["hospitalize"]}]}
     }, {
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [-77.002583742142,
-          38.887041080933
-        ]
+        "coordinates": [-85.8168547, 38.1887218]
       },
       "properties": {
-        "phoneFormatted": "(202) 547-9338",
-        "phone": "2025479338",
-        "address": "221 Pennsylvania Ave SE",
-        "city": "Washington DC",
-        "country": "United States",
-        "crossStreet": "btwn 2nd & 3rd Sts. SE",
-        "postalCode": "20003",
-        "state": "D.C."
-      }
+      "articleTitle": "Person shot overnight in Shawnee neighborhood - wave3.com-Louisville News, Weather & Sports",
+      "articleUrl": "http://www.wave3.com/story/29692673/person-shot-overnight-on-broadway",
+      "circumstances":{"number-of-shots-fired":{"endIndex":-1,"startIndex":-1,"value":""},"type-of-gun":{"endIndex":-1,"startIndex":-1,"value":""}},"date-and-time":{"city":{"endIndex":10,"startIndex":0,"value":"LOUISVILLE"},"clock-time":{"endIndex":-1,"startIndex":-1,"value":""},"date":"","details":{"endIndex":76,"startIndex":56,"value":"Shawnee neighborhood"},"state":"KY","time-day":{"endIndex":-1,"startIndex":-1,"value":""}},"radio1":{"The firearm was used during another crime.":"Yes","The firearm was used in self defense.":"Not mentioned","The incident was a case of domestic violence.":"Not mentioned","The shooter and the victim knew each other.":"Not mentioned"},"radio2":{"Alcohol was involved.":"Not mentioned","Drugs (other than alcohol) were involved.":"Not mentioned","The shooting was a suicide or suicide attempt.":"Not mentioned","The shooting was self-directed.":"Not mentioned"},"radio3":{"The firearm was owned by the victim/victims family.":"Not mentioned","The firearm was stolen.":"Not mentioned","The shooting was by a police officer.":"Not mentioned","The shooting was directed at a police officer.":"Not mentioned","The shooting was unintentional.":"Not mentioned"},"shooter-section":[{"age":{"endIndex":-1,"startIndex":-1,"value":""},"gender":"","name":{"endIndex":-1,"startIndex":-1,"value":""},"race":{"endIndex":-1,"startIndex":-1,"value":""}}],"victim-section":[{"age":{"endIndex":-1,"startIndex":-1,"value":""},"gender":"","name":{"endIndex":-1,"startIndex":-1,"value":""},"race":{"endIndex":-1,"startIndex":-1,"value":""},"victim-was":[]}]}
     }, {
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [-76.933492720127,
-          38.99225245786
-        ]
+        "coordinates": [-90.2509738, 35.1288636]
       },
       "properties": {
-        "address": "8204 Baltimore Ave",
-        "city": "College Park",
-        "country": "United States",
-        "postalCode": "20740",
-        "state": "MD"
-      }
+      "articleTitle": "Memphis Police officer shot, killed during traffic stop - FOX 8 WVUE New Orleans News, Weather, Sports, Social",
+      "articleUrl": "http://www.fox8live.com/story/29688626/.continueReading.more",
+      "circumstances":{"number-of-shots-fired":{"endIndex":-1,"startIndex":-1,"value":""},"type-of-gun":{"endIndex":-1,"startIndex":-1,"value":""}},"date-and-time":{"city":{"endIndex":9,"startIndex":2,"value":"Memphis"},"clock-time":{"endIndex":-1,"startIndex":-1,"value":""},"date":"","details":{"endIndex":121,"startIndex":88,"value":"near Cottonwood and Perkins Roads"},"state":"","time-day":{"endIndex":136,"startIndex":122,"value":"Saturday night"}},"radio1":{"The firearm was used during another crime.":"Not mentioned","The firearm was used in self defense.":"No","The incident was a case of domestic violence.":"No","The shooter and the victim knew each other.":"No"},"radio2":{"Alcohol was involved.":"Not mentioned","Drugs (other than alcohol) were involved.":"Not mentioned","The shooting was a suicide or suicide attempt.":"No","The shooting was self-directed.":"No"},"radio3":{"The firearm was owned by the victim/victims family.":"No","The firearm was stolen.":"Not mentioned","The shooting was by a police officer.":"No","The shooting was directed at a police officer.":"Yes","The shooting was unintentional.":"No"},"shooter-section":[{"age":{"endIndex":-1,"startIndex":-1,"value":""},"gender":"","name":{"endIndex":-1,"startIndex":-1,"value":""},"race":{"endIndex":-1,"startIndex":-1,"value":""}}],"victim-section":[{"age":{"endIndex":192,"startIndex":181,"value":"33-year-old"},"gender":"Male","name":{"endIndex":204,"startIndex":193,"value":"Sean Bolton"},"race":{"endIndex":-1,"startIndex":-1,"value":""},"victim-was":["killed","hospitalize"]}]}
     }, {
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [-77.097083330154,
-          38.980979
-        ]
+        "coordinates": [-89.8885108, 44.2925062]
       },
       "properties": {
-        "phoneFormatted": "(301) 654-7336",
-        "phone": "3016547336",
-        "address": "4831 Bethesda Ave",
-        "cc": "US",
-        "city": "Bethesda",
-        "country": "United States",
-        "postalCode": "20814",
-        "state": "MD"
-      }
+      "articleTitle": "Officials: 2 flown to hospital after Wood County crash - WAOW - Newsline 9, Wausau News, Weather, Sports",
+      "articleUrl": "http://www.waow.com/story/29689839/2015/08/02/officials-2-flown-to-hospital-after-wood-county-crash",
+      "circumstances":{"number-of-shots-fired":{"endIndex":-1,"startIndex":-1,"value":""},"type-of-gun":{"endIndex":-1,"startIndex":-1,"value":""}},"date-and-time":{"city":{"endIndex":150,"startIndex":142,"value":"Saratoga"},"clock-time":{"endIndex":12,"startIndex":7,"value":"6 a.m"},"date":"","details":{"endIndex":236,"startIndex":176,"value":"ruck was found in a ditch after it rolled over and hit trees"},"state":"","time-day":{"endIndex":23,"startIndex":17,"value":"Sunday"}},"radio1":{"The firearm was used during another crime.":"No","The firearm was used in self defense.":"No","The incident was a case of domestic violence.":"No","The shooter and the victim knew each other.":"No"},"radio2":{"Alcohol was involved.":"Not mentioned","Drugs (other than alcohol) were involved.":"Not mentioned","The shooting was a suicide or suicide attempt.":"No","The shooting was self-directed.":"No"},"radio3":{"The firearm was owned by the victim/victims family.":"No","The firearm was stolen.":"No","The shooting was by a police officer.":"No","The shooting was directed at a police officer.":"No","The shooting was unintentional.":"No"},"shooter-section":[{"age":{"endIndex":-1,"startIndex":-1,"value":""},"gender":"","name":{"endIndex":-1,"startIndex":-1,"value":""},"race":{"endIndex":-1,"startIndex":-1,"value":""}}],"victim-section":[{"age":{"endIndex":-1,"startIndex":-1,"value":""},"gender":"","name":{"endIndex":-1,"startIndex":-1,"value":""},"race":{"endIndex":-1,"startIndex":-1,"value":""},"victim-was":["injured","hospitalize"]}]}
     }, {
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [-77.359425054188,
-          38.958058116661
-        ]
+        "coordinates": [-88.692303, 33.600422]
       },
       "properties": {
-        "phoneFormatted": "(571) 203-0082",
-        "phone": "5712030082",
-        "address": "11935 Democracy Dr",
-        "city": "Reston",
-        "country": "United States",
-        "crossStreet": "btw Explorer & Library",
-        "postalCode": "20190",
-        "state": "VA"
-      }
+      "articleUrl": "http://www.dailytimesleader.com/tags/crime",
+      "articleTitle": "CRIME | The Daily Times Leader",
+      "circumstances":{"number-of-shots-fired":{"endIndex":-1,"startIndex":-1,"value":""},"type-of-gun":{"endIndex":-1,"startIndex":-1,"value":""}},"date-and-time":{"city":{"endIndex":141,"startIndex":131,"value":"West Point"},"clock-time":{"endIndex":-1,"startIndex":-1,"value":""},"date":"","details":{"endIndex":68,"startIndex":53,"value":"alleged robbery"},"state":"MS","time-day":{"endIndex":90,"startIndex":74,"value":"Monday afternoon "}},"radio1":{"The firearm was used during another crime.":"Not mentioned","The firearm was used in self defense.":"Not mentioned","The incident was a case of domestic violence.":"No","The shooter and the victim knew each other.":"Not mentioned"},"radio2":{"Alcohol was involved.":"Not mentioned","Drugs (other than alcohol) were involved.":"Not mentioned","The shooting was a suicide or suicide attempt.":"No","The shooting was self-directed.":"No"},"radio3":{"The firearm was owned by the victim/victims family.":"Not mentioned","The firearm was stolen.":"Not mentioned","The shooting was by a police officer.":"Not mentioned","The shooting was directed at a police officer.":"Not mentioned","The shooting was unintentional.":"No"},"shooter-section":[{"age":{"endIndex":-1,"startIndex":-1,"value":""},"gender":"","name":{"endIndex":-1,"startIndex":-1,"value":""},"race":{"endIndex":-1,"startIndex":-1,"value":""}}],"victim-section":[{"age":{"endIndex":-1,"startIndex":-1,"value":""},"gender":"","name":{"endIndex":-1,"startIndex":-1,"value":""},"race":{"endIndex":-1,"startIndex":-1,"value":""},"victim-was":[]}]}
     }, {
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [-77.10853099823,
-          38.880100922392
-        ]
+        "coordinates": [47.1830462,-122.3212979]
       },
       "properties": {
-        "phoneFormatted": "(703) 522-2016",
-        "phone": "7035222016",
-        "address": "4075 Wilson Blvd",
-        "city": "Arlington",
-        "country": "United States",
-        "crossStreet": "at N Randolph St.",
-        "postalCode": "22203",
-        "state": "VA"
-      }
+      "articleTitle": "Sheriff's office: Man kills girlfriend, self near Puyallup - Spokane, North Idaho News & Weather KHQ.com",
+      "articleUrl": "http://www.khq.com/story/29696543/sheriffs-office-man-kills-girlfriend-self-near-puyallup",
+      "circumstances":{"number-of-shots-fired":{"endIndex":-1,"startIndex":-1,"value":""},"type-of-gun":{"endIndex":-1,"startIndex":-1,"value":""}},"date-and-time":{"city":{"endIndex":8,"startIndex":0,"value":"PUYALLUP"},"clock-time":{"endIndex":-1,"startIndex":-1,"value":""},"date":"","details":{"endIndex":172,"startIndex":63,"value":"a 31-year-old man shot and killed his 34-year-old girlfriend and then himself inside her home near Puyallup. "},"state":"Wash.","time-day":{"endIndex":541,"startIndex":511,"value":"late Saturday or early Sunday,"}},"radio1":{"The firearm was used during another crime.":"Not mentioned","The firearm was used in self defense.":"No","The incident was a case of domestic violence.":"Yes","The shooter and the victim knew each other.":"Yes"},"radio2":{"Alcohol was involved.":"Not mentioned","Drugs (other than alcohol) were involved.":"Not mentioned","The shooting was a suicide or suicide attempt.":"Yes","The shooting was self-directed.":"Yes"},"radio3":{"The firearm was owned by the victim/victims family.":"Not mentioned","The firearm was stolen.":"Not mentioned","The shooting was by a police officer.":"No","The shooting was directed at a police officer.":"No","The shooting was unintentional.":"No"},"shooter-section":[{"age":{"endIndex":76,"startIndex":65,"value":"31-year-old"},"gender":"Male","name":{"endIndex":-1,"startIndex":-1,"value":""},"race":{"endIndex":-1,"startIndex":-1,"value":""}}],"victim-section":[{"age":{"endIndex":113,"startIndex":101,"value":"34-year-old "},"gender":"Female","name":{"endIndex":-1,"startIndex":-1,"value":""},"race":{"endIndex":-1,"startIndex":-1,"value":""},"victim-was":["killed"]},{"age":{"endIndex":76,"startIndex":65,"value":"31-year-old"},"gender":"Male","name":{"endIndex":-1,"startIndex":-1,"value":""},"race":{"endIndex":-1,"startIndex":-1,"value":""},"victim-was":["killed"]}]}
     }, {
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [-75.28784,
-          40.008008
-        ]
+        "coordinates": [-90.2509738, 35.1288636]
       },
       "properties": {
-        "phoneFormatted": "(610) 642-9400",
-        "phone": "6106429400",
-        "address": "68 Coulter Ave",
-        "city": "Ardmore",
-        "country": "United States",
-        "postalCode": "19003",
-        "state": "PA"
-      }
+      "articleTitle": "Home | LOCALMEMPHIS",
+      "articleUrl": "http://www.localmemphis.com/",
+      "circumstances":{"number-of-shots-fired":{"endIndex":-1,"startIndex":-1,"value":""},"type-of-gun":{"endIndex":-1,"startIndex":-1,"value":""}},"date-and-time":{"city":{"endIndex":80,"startIndex":73,"value":"Memphis"},"clock-time":{"endIndex":-1,"startIndex":-1,"value":""},"date":"","details":{"endIndex":139,"startIndex":80,"value":"Officers have a person-of-interest in custody from last night's shooting Memphis Police are on the scene of apartments in Southeast Memphis"},"state":"","time-day":{"endIndex":-1,"startIndex":-1,"value":""}},"radio1":{"The firearm was used during another crime.":"Not mentioned","The firearm was used in self defense.":"Not mentioned","The incident was a case of domestic violence.":"Not mentioned","The shooter and the victim knew each other.":"Not mentioned"},"radio2":{"Alcohol was involved.":"Not mentioned","Drugs (other than alcohol) were involved.":"Not mentioned","The shooting was a suicide or suicide attempt.":"Not mentioned","The shooting was self-directed.":"Not mentioned"},"radio3":{"The firearm was owned by the victim/victims family.":"Not mentioned","The firearm was stolen.":"Not mentioned","The shooting was by a police officer.":"Not mentioned","The shooting was directed at a police officer.":"Not mentioned","The shooting was unintentional.":"Not mentioned"},"shooter-section":[{"age":{"endIndex":-1,"startIndex":-1,"value":""},"gender":"","name":{"endIndex":-1,"startIndex":-1,"value":""},"race":{"endIndex":-1,"startIndex":-1,"value":""}}],"victim-section":[{"age":{"endIndex":-1,"startIndex":-1,"value":""},"gender":"","name":{"endIndex":-1,"startIndex":-1,"value":""},"race":{"endIndex":-1,"startIndex":-1,"value":""},"victim-was":[]}]}
     }, {
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [-75.20121216774,
-          39.954030175164
-        ]
+        "coordinates": [-77.5633014, 37.5246403]
       },
       "properties": {
-        "phoneFormatted": "(215) 386-1365",
-        "phone": "2153861365",
-        "address": "3925 Walnut St",
-        "city": "Philadelphia",
-        "country": "United States",
-        "postalCode": "19104",
-        "state": "PA"
-      }
-    }, {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [-77.043959498405,
-          38.903883387232
-        ]
-      },
-      "properties": {
-        "phoneFormatted": "(202) 331-3355",
-        "phone": "2023313355",
-        "address": "1901 L St. NW",
-        "city": "Washington DC",
-        "country": "United States",
-        "crossStreet": "at 19th St",
-        "postalCode": "20036",
-        "state": "D.C."
-      }
+      "articleTitle": "Person on bike shot in the Fan - NBC12 - WWBT - Richmond, VA News On Your Side",
+      "articleUrl": "http://www.nbc12.com/story/29692846/DCSext.contentprovider",
+      "circumstances":{"number-of-shots-fired":{"endIndex":166,"startIndex":151,"value":"shot in the leg"},"type-of-gun":{"endIndex":-1,"startIndex":-1,"value":""}},"date-and-time":{"city":{"endIndex":8,"startIndex":0,"value":"Richmond"},"clock-time":{"endIndex":107,"startIndex":99,"value":"3:15 a.m"},"date":"","details":{"endIndex":307,"startIndex":136,"value":"The victim was shot in the leg while riding a bike. He was taken to VCU Medical Center and is expected to be okay. The victim says a vehicle ran up on him and opened fire."},"state":"","time-day":{"endIndex":-1,"startIndex":-1,"value":""}},"radio1":{"The firearm was used during another crime.":"Not mentioned","The firearm was used in self defense.":"No","The incident was a case of domestic violence.":"No","The shooter and the victim knew each other.":"No"},"radio2":{"Alcohol was involved.":"Not mentioned","Drugs (other than alcohol) were involved.":"Not mentioned","The shooting was a suicide or suicide attempt.":"No","The shooting was self-directed.":"No"},"radio3":{"The firearm was owned by the victim/victims family.":"No","The firearm was stolen.":"Not mentioned","The shooting was by a police officer.":"No","The shooting was directed at a police officer.":"No","The shooting was unintentional.":"No"},"shooter-section":[{"age":{"endIndex":-1,"startIndex":-1,"value":""},"gender":"","name":{"endIndex":-1,"startIndex":-1,"value":""},"race":{"endIndex":-1,"startIndex":-1,"value":""}},{"age":{"endIndex":-1,"startIndex":-1,"value":""},"gender":"","name":{"endIndex":-1,"startIndex":-1,"value":""},"race":{"endIndex":-1,"startIndex":-1,"value":""}}],"victim-section":[{"age":{"endIndex":-1,"startIndex":-1,"value":""},"gender":"Male","name":{"endIndex":-1,"startIndex":-1,"value":""},"race":{"endIndex":-1,"startIndex":-1,"value":""},"victim-was":["injured","hospitalize"]},{"age":{"endIndex":-1,"startIndex":-1,"value":""},"gender":"","name":{"endIndex":-1,"startIndex":-1,"value":""},"race":{"endIndex":-1,"startIndex":-1,"value":""},"victim-was":[]}]}
     }]
   };
   // This adds the data to the map
@@ -433,20 +373,50 @@
     // Add the data to your map as a layer
     map.addLayer({
       "id": "locations",
-      "type": "symbol",
+      "type": "circle",
       // Add a GeoJSON source containing place coordinates and information.
       "source": {
         "type": "geojson",
         "data": stores
       },
-      "layout": {
-        "icon-image": "restaurant-15",
-        "icon-allow-overlap": true,
+      paint: {
+        'circle-radius': [
+          'interpolate',
+          ['linear'],
+          ['number', ['length', ['array', ['get', 'victim-section']]]],
+          0, 4,
+          5, 24
+        ],
+        'circle-color': [
+          'interpolate',
+          ['linear'],
+          ['number', ['length', ['array', ['get', 'victim-section']]]],
+          0, '#2DC4B2',
+          1, '#3BB3C3',
+          2, '#669EC4',
+          3, '#8B88B6',
+          4, '#A2719B',
+          5, '#AA5E79'
+        ],
+        'circle-opacity': 0.8
       }
     });
     // Initialize the list
     buildLocationList(stores);
   });
+
+  document.getElementById('slider').addEventListener('input', function(e) {
+      var hour = parseInt(e.target.value);
+      // update the map
+      map.setFilter('collisions', ['==', ['number', ['get', 'Hour']], hour]);
+
+      // converting 0-23 hour to AMPM format
+      var ampm = hour >= 12 ? 'PM' : 'AM';
+      var hour12 = hour % 12 ? hour % 12 : 12;
+
+      // update text in the UI
+      document.getElementById('active-hour').innerText = hour12 + ampm;
+    });
 
 
   map.on('click', function(e) {
@@ -486,7 +456,7 @@
   function flyToStore(currentFeature) {
     map.flyTo({
       center: currentFeature.geometry.coordinates,
-      zoom: 15
+      zoom: 5
     });
   }
 
@@ -498,8 +468,12 @@
 
     var popup = new mapboxgl.Popup({closeOnClick: false})
       .setLngLat(currentFeature.geometry.coordinates)
-      .setHTML('<h3>Sweetgreen</h3>' +
-        '<h4>' + currentFeature.properties.address + '</h4>')
+      .setHTML('<h3>' + currentFeature.properties['articleTitle'] + '</h3>' +
+        '<h4>Date and time</h4>' +
+        '<h4>Victim section</h4>' +
+        '<h4>Shooter section</h4>' +
+        '<h4>Circumstances</h4>'
+        )
       .addTo(map);
   }
 
@@ -524,15 +498,12 @@
       link.href = '#';
       link.className = 'title';
       link.dataPosition = i;
-      link.innerHTML = prop.address;
+      link.innerHTML = prop['articleTitle'];
 
       // Create a new div with the class 'details' for each store
       // and fill it with the city and phone number
       var details = listing.appendChild(document.createElement('div'));
-      details.innerHTML = prop.city;
-      if (prop.phone) {
-        details.innerHTML += ' &middot; ' + prop.phoneFormatted;
-      }
+      details.innerHTML = "<a href=" + prop['articleUrl'] + ">" + prop['articleUrl'] + "</a>";
 
 
       link.addEventListener('click', function(e) {
