@@ -383,14 +383,14 @@
         'circle-radius': [
           'interpolate',
           ['linear'],
-          ['number', ['get', 'Casualty']],
+          ['number', ['length', ['array', ['get', 'victim-section']]]],
           0, 4,
           5, 24
         ],
         'circle-color': [
           'interpolate',
           ['linear'],
-          ['number', ['get', 'Casualty']],
+          ['number', ['length', ['array', ['get', 'victim-section']]]],
           0, '#2DC4B2',
           1, '#3BB3C3',
           2, '#669EC4',
