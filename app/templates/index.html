@@ -447,7 +447,7 @@
       // Create a new div with the class 'details' for each store
       // and fill it with the city and phone number
       var details = listing.appendChild(document.createElement('div'));
-      details.innerHTML = prop['date-and-time'].details.value;
+      details.innerHTML = "<a href=" + prop['articleUrl'] + ">" + prop['articleTitle'] + "</a>";
 
 
       link.addEventListener('click', function(e) {
