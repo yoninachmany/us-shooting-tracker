@@ -66,8 +66,8 @@ us_state_abbrev = {
     'DC': 'District of Columbia'
 }
 
-geo_client = GeocodioClient('304731ec51c50c0a50fa3361aec076167e106a0')
-gmaps = googlemaps.Client(key='AIzaSyCTZcOWn00WeFoSSRcjwbATgGF6epsHIOs')
+geo_client = GeocodioClient('<insert>')
+gmaps = googlemaps.Client(key='<insert>')
 
 
 def get_city_state_google(location):
