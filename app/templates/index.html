@@ -89,7 +89,7 @@
       </div>
     </div>
     <div class='session'>
-      <h2>Year: <label id='active-hour'>2018</label></h2>
+      <h2>Year: <label id='active-year'>2018</label></h2>
       <input id='slider' class='row' type='range' min='2000' max='2018' step='1' value='2018' />
     </div>
     <div class='session'>
@@ -283,33 +283,31 @@
 
     // update hour filter when the slider is dragged
     document.getElementById('slider').addEventListener('input', function(e) {
-      var hour = parseInt(e.target.value);
+      var year = parseInt(e.target.value);
       // update the map
-      filterHour = ['==', ['number', ['get', 'Hour']], hour];
-      map.setFilter('collisions', ['all', filterHour, filterDay]);
-
-      // converting 0-23 hour to AMPM format
-      var ampm = hour >= 12 ? 'PM' : 'AM';
-      var hour12 = hour % 12 ? hour % 12 : 12;
+      filterYear = ['==', ['number', ['get', 'year']], year];
+      map.setFilter('clusters', ['all', filterYear, filterDay]);
+      map.setFilter('cluster-count', ['all', filterYear, filterDay]);
+      map.setFilter('unclustered-point', ['all', filterYear, filterDay]);
 
       // update text in the UI
-      document.getElementById('active-hour').innerText = hour12 + ampm;
+      document.getElementById('active-year').innerText = year;
     });
 
-    document.getElementById('filters').addEventListener('change', function(e) {
-      var day = e.target.value;
-      // update the map filter
-      if (day === 'all') {
-        filterDay = ['!=', ['string', ['get','Day']], 'placeholder'];
-      } else if (day === 'weekday') {
-        filterDay = ['match', ['get', 'Day'], ['Sat', 'Sun'], false, true];
-      } else if (day === 'weekend') {
-        filterDay = ['match', ['get', 'Day'], ['Sat', 'Sun'], true, false];
-      } else {
-        console.log('error');
-      };
-      map.setFilter('collisions', ['all', filterHour, filterDay]);
-    });
+    <!--document.getElementById('filters').addEventListener('change', function(e) {-->
+      <!--var day = e.target.value;-->
+      <!--// update the map filter-->
+      <!--if (day === 'all') {-->
+        <!--filterDay = ['!=', ['string', ['get','Day']], 'placeholder'];-->
+      <!--} else if (day === 'weekday') {-->
+        <!--filterDay = ['match', ['get', 'Day'], ['Sat', 'Sun'], false, true];-->
+      <!--} else if (day === 'weekend') {-->
+        <!--filterDay = ['match', ['get', 'Day'], ['Sat', 'Sun'], true, false];-->
+      <!--} else {-->
+        <!--console.log('error');-->
+      <!--};-->
+      <!--map.setFilter('collisions', ['all', filterYear, filterDay]);-->
+    <!--});-->
 
   });
   </script>
