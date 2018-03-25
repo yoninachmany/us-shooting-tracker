@@ -117,6 +117,37 @@
   map.addControl(new mapboxgl.NavigationControl());
 
   map.on('load', function() {
+    // Add the source to query. In this example we're using
+    // county polygons uploaded as vector tiles
+    map.addSource('counties', {
+      type: 'vector',
+      url: 'mapbox://mapbox.82pkq93d'
+    });
+
+    map.addLayer({
+      id: 'counties',
+      type: 'fill',
+      source: 'counties',
+      'source-layer': 'original',
+      paint: {
+          'fill-outline-color': 'rgba(0,0,0,0.1)',
+          'fill-color': 'rgba(0,0,0,0.1)'
+      }
+    }, 'place-city-sm'); // Place polygon under these labels.
+
+    map.addLayer({
+      id: 'counties-highlighted',
+      type: 'fill',
+      source: "counties",
+      'source-layer': 'original',
+      paint: {
+          'fill-outline-color': '#484896',
+          'fill-color': '#6e599f',
+          'fill-opacity': 0.75
+      },
+      filter: ['in', 'COUNTY', '']
+    }, 'place-city-sm'); // Place polygon under these labels.
+
 
     var filterHour = ['==', ['number',['get', 'Hour']], 12];
     var filterDay = ['!=', ['string',['get', 'Day']], 'placeholder'];
