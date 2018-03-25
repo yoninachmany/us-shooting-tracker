@@ -102,17 +102,6 @@
       </div>
     </div>
     <div class='session'>
-      <h2>Day of the week</h2>
-      <div class='row' id='filters'>
-        <input id='all' type='radio' name='toggle' value='all' checked='checked'>
-        <label for='all'>All</label>
-        <input id='weekday' type='radio' name='toggle' value='weekday'>
-        <label for='weekday'>Weekday</label>
-        <input id='weekend' type='radio' name='toggle' value='weekend'>
-        <label for='weekend'>Weekend</label>
-      </div>
-    </div>
-    <div class='session'>
       <h2>Firearm use</h2>
       <div class='row' id='use'>
         <input id='anotherCrime' type='checkbox' value='anotherCrime'>
@@ -130,6 +119,47 @@
         <label for='drugs'>Drugs (other than alcohol)</label>
       </div>
     </div>
+    <div class='session'>
+      <h2>Shooting intention</h2>
+      <div class='row' id='intention'>
+        <input id='selfDirected' type='checkbox' value='selfDirected'>
+        <label for='selfDirected'>Self-directed</label>
+        <input id='suicideOrAttempt' type='checkbox' value='suicideOrAttempt'>
+        <label for='suicideOrAttempt'>Suicide</label>
+        <input id='unintentional' type='checkbox' value='unintentional'>
+        <label for='unintentional'>Unintentional</label>
+      </div>
+    </div>
+    <div class='session'>
+      <h2>Police involvement</h2>
+      <div class='row' id='police'>
+        <input id='byOfficer' type='checkbox' value='byOfficer'>
+        <label for='byOfficer'>By a police officer</label>
+        <input id='atOfficer' type='checkbox' value='atOfficer'>
+        <label for='atOfficer'>At a police officer</label>
+      </div>
+    </div>
+    <div class='session'>
+      <h2>Firearm ownership</h2>
+      <div class='row' id='ownership'>
+        <input id='stolen' type='checkbox' value='stolen'>
+        <label for='stolen'>Stolen</label>
+        <input id='familyOwned' type='checkbox' value='familyOwned'>
+        <label for='familyOwned'>Owned by victim/victim's family</label>
+      </div>
+    </div>
+    <!--<div class='session'>-->
+      <!--<h2>Day of the week</h2>-->
+      <!--<div class='row' id='filters'>-->
+        <!--<input id='all' type='radio' name='toggle' value='all' checked='checked'>-->
+        <!--<label for='all'>All</label>-->
+        <!--<input id='weekday' type='radio' name='toggle' value='weekday'>-->
+        <!--<label for='weekday'>Weekday</label>-->
+        <!--<input id='weekend' type='radio' name='toggle' value='weekend'>-->
+        <!--<label for='weekend'>Weekend</label>-->
+      <!--</div>-->
+    <!--</div>-->
+  </div>
   </div>
   <script>
   mapboxgl.accessToken = 'pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2lqbmpqazdlMDBsdnRva284cWd3bm11byJ9.V6Hg2oYJwMAxeoR9GEzkAA';
