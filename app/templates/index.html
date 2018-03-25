@@ -56,12 +56,12 @@
   }
 
   .colors {
-    background: linear-gradient(to right, #2DC4B2, #3BB3C3, #669EC4, #8B88B6, #A2719B, #AA5E79);
+    background: linear-gradient(to right, #FFEDA0, #FED976, #FEB24C, #FD8D3C, #FC4E2A, #E31A1C, #BD0026, #800026);
     margin-bottom: 5px;
   }
 
   .label {
-    width: 15%;
+    width: 12%;
     display: inline-block;
     text-align: center;
   }
@@ -78,12 +78,13 @@
       <div class='row colors'>
       </div>
       <div class='row labels'>
-        <div class='label'>0</div>
-        <div class='label'>1</div>
-        <div class='label'>2</div>
-        <div class='label'>3</div>
-        <div class='label'>4</div>
-        <div class='label'>5+</div>
+        <div class='label'>10</div>
+        <div class='label'>20</div>
+        <div class='label'>50</div>
+        <div class='label'>100</div>
+        <div class='label'>200</div>
+        <div class='label'>500</div>
+        <div class='label'>1000+</div>
       </div>
     </div>
     <div class='session'>
@@ -139,20 +140,40 @@
         'circle-color': [
           'step',
           ['get', 'point_count'],
-          '#51bbd6',
+          '#FFEDA0',
+          10,
+          '#FED976',
+          20,
+          '#FEB24C',
+          50,
+          '#FD8D3C',
           100,
-          '#f1f075',
-          750,
-          '#f28cb1'
+          '#FC4E2A',
+          200,
+          '#E31A1C',
+          500,
+          '#BD0026',
+          1000,
+          '#800026'
         ],
         'circle-radius': [
           'step',
           ['get', 'point_count'],
           20,
+          10,
+          22.5,
+          20,
+          25,
+          50,
+          27.5,
           100,
           30,
-          750,
-          40
+          200,
+          32.5,
+          500,
+          35,
+          1000,
+          37.5
         ],
       }
       <!--,'filter': ['all', filterHour, filterDay]-->
