@@ -200,27 +200,6 @@
     });
 
     d3.json('/static/shootings2500.geojson', function(err, data) {
-      function filterBy(data, year, month, circumstances) {
-        var features = data.features;
-        if (year) {
-          features = features.filter(feature => new Date(feature.properties.date).getFullYear() === year);
-        }
-        if (month) {
-          features = features.filter(feature => new Date(feature.properties.date).getMonth() === month);
-        }
-        if (circumstances) {
-          features = features.filter(feature => {
-            for (var i = 0; i < circumstances.length; i++) {
-              if (feature.properties[circumstances[i]] !== "Yes") {
-                return false;
-              }
-            }
-            return true;
-          });
-        }
-        var featureCollection = {"type": "FeatureCollection", "features": features};
-        return featureCollection;
-      }
 
       // Add a new source from our GeoJSON data and set the
       // 'cluster' option to true. GL-JS will add the point_count property to your source data.
@@ -379,6 +358,28 @@
   map.on('mouseleave', 'unclustered-point', function () {
     map.getCanvas().style.cursor = '';
   });
+
+  function filterBy(data, year, month, circumstances) {
+    var features = data.features;
+    if (year) {
+      features = features.filter(feature => new Date(feature.properties.date).getFullYear() === year);
+    }
+    if (month) {
+      features = features.filter(feature => new Date(feature.properties.date).getMonth() === month);
+    }
+    if (circumstances) {
+      features = features.filter(feature => {
+        for (var i = 0; i < circumstances.length; i++) {
+          if (feature.properties[circumstances[i]] !== "Yes") {
+            return false;
+          }
+        }
+        return true;
+      });
+    }
+    var featureCollection = {"type": "FeatureCollection", "features": features};
+    return featureCollection;
+  }
   </script>
 </body>
 
