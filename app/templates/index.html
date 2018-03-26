@@ -173,6 +173,12 @@
   // Add zoom and rotation controls to the map.
   map.addControl(new mapboxgl.NavigationControl());
 
+  var data = null;
+  var year = null;
+  var month = null;
+
+  var circumstances = null;
+
   map.on('load', function() {
     // Add the source to query. In this example we're using
     // congressional district polygons uploaded as vector tiles
@@ -192,10 +198,6 @@
           'fill-color': 'rgba(0,0,0,0.1)'
       }
     });
-
-    var year = 2000;
-    var month = 0;
-    var circumstances = [];
 
     var months = [
       'January',
