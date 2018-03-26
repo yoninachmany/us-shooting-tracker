@@ -199,15 +199,18 @@
     var filterDay = ['!=', ['string',['get', 'Day']], 'placeholder'];
 
     d3.json('/static/shootings2500.geojson', function(err, data) {
-      var features = data.features.filter(feature => feature.properties.date.includes(2017));
-      var featureCollection = {"type": "FeatureCollection", "features": features};
+      function filterYear(year) {
+        var features = data.features.filter(feature => feature.properties.date.includes(year));
+        var featureCollection = {"type": "FeatureCollection", "features": features};
+        return featureCollection
+      }
 
       // Add a new source from our GeoJSON data and set the
       // 'cluster' option to true. GL-JS will add the point_count property to your source data.
       map.addSource('shootings', {
         type: 'geojson',
         // Point to GeoJSON data.
-        data: featureCollection,
+        data: filterYear(2017),
         cluster: true,
         clusterMaxZoom: 14, // Max zoom to cluster points on
         clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
@@ -290,9 +293,7 @@
       document.getElementById('slider').addEventListener('input', function(e) {
         var year = parseInt(e.target.value);
         // update the map
-        var features = data.features.filter(feature => feature.properties.date.includes(year));
-        var featureCollection = {"type": "FeatureCollection", "features": features};
-        map.getSource('shootings').setData(featureCollection);
+        map.getSource('shootings').setData(filterYear(year));
 
         // update text in the UI
         document.getElementById('active-year').innerText = year;
