@@ -323,7 +323,8 @@
     // location of the feature, with description HTML from its properties.
     map.on('click', 'unclustered-point', function (e) {
       var coordinates = e.features[0].geometry.coordinates.slice();
-      var description = e.features[0].properties.description;
+      var articleUrl = e.features[0].properties.articleUrl;
+      var articleTitle = e.features[0].properties.articleTitle;
 
       // Ensure that if the map is zoomed out such that multiple
       // copies of the feature are visible, the popup appears
@@ -334,7 +335,7 @@
 
       new mapboxgl.Popup()
         .setLngLat(coordinates)
-        .setHTML(description)
+        .setHTML(`<a href=${articleUrl}>${articleTitle}</a>`)
         .addTo(map);
     });
 
