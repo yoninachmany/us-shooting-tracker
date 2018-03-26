@@ -97,60 +97,62 @@
       <h2>Year: <label id='active-year'>2017</label></h2>
       <input id='slider' class='row' type='range' min='2000' max='2017' step='1' value='2017' />
     </div>
-    <div class='session'>
-      <h2>Shooter-victim relationship</h2>
-      <div class='row' id='relationship'>
-        <input id='knewEachOther' type='checkbox' value='knewEachOther'>
-        <label for='knewEachOther'>Knew each other</label>
-        <input id='domesticViolence' type='checkbox' value='domesticViolence'>
-        <label for='domesticViolence'>Domestic violence</label>
+    <div id='filters'>
+      <div class='session'>
+        <h2>Shooter-victim relationship</h2>
+        <div class='row' id='relationship'>
+          <input id='knewEachOther' type='checkbox' value='knewEachOther'>
+          <label for='knewEachOther'>Knew each other</label>
+          <input id='domesticViolence' type='checkbox' value='domesticViolence'>
+          <label for='domesticViolence'>Domestic violence</label>
+        </div>
       </div>
-    </div>
-    <div class='session'>
-      <h2>Firearm use</h2>
-      <div class='row' id='use'>
-        <input id='anotherCrime' type='checkbox' value='anotherCrime'>
-        <label for='anotherCrime'>During another crime</label>
-        <input id='selfDefense' type='checkbox' value='selfDefense'>
-        <label for='selfDefense'>In self defense</label>
+      <div class='session'>
+        <h2>Firearm use</h2>
+        <div class='row' id='use'>
+          <input id='anotherCrime' type='checkbox' value='anotherCrime'>
+          <label for='anotherCrime'>During another crime</label>
+          <input id='selfDefense' type='checkbox' value='selfDefense'>
+          <label for='selfDefense'>In self defense</label>
+        </div>
       </div>
-    </div>
-    <div class='session'>
-      <h2>Substances involved</h2>
-      <div class='row' id='substances'>
-        <input id='alcohol' type='checkbox' value='alcohol'>
-        <label for='alcohol'>Alcohol</label>
-        <input id='drugs' type='checkbox' value='drugs'>
-        <label for='drugs'>Drugs (other than alcohol)</label>
+      <div class='session'>
+        <h2>Substances involved</h2>
+        <div class='row' id='substances'>
+          <input id='alcohol' type='checkbox' value='alcohol'>
+          <label for='alcohol'>Alcohol</label>
+          <input id='drugs' type='checkbox' value='drugs'>
+          <label for='drugs'>Drugs (other than alcohol)</label>
+        </div>
       </div>
-    </div>
-    <div class='session'>
-      <h2>Shooting intention</h2>
-      <div class='row' id='intention'>
-        <input id='selfDirected' type='checkbox' value='selfDirected'>
-        <label for='selfDirected'>Self-directed</label>
-        <input id='suicideOrAttempt' type='checkbox' value='suicideOrAttempt'>
-        <label for='suicideOrAttempt'>Suicide</label>
-        <input id='unintentional' type='checkbox' value='unintentional'>
-        <label for='unintentional'>Unintentional</label>
+      <div class='session'>
+        <h2>Shooting intention</h2>
+        <div class='row' id='intention'>
+          <input id='selfDirected' type='checkbox' value='selfDirected'>
+          <label for='selfDirected'>Self-directed</label>
+          <input id='suicideOrAttempt' type='checkbox' value='suicideOrAttempt'>
+          <label for='suicideOrAttempt'>Suicide</label>
+          <input id='unintentional' type='checkbox' value='unintentional'>
+          <label for='unintentional'>Unintentional</label>
+        </div>
       </div>
-    </div>
-    <div class='session'>
-      <h2>Police involvement</h2>
-      <div class='row' id='police'>
-        <input id='byOfficer' type='checkbox' value='byOfficer'>
-        <label for='byOfficer'>By a police officer</label>
-        <input id='atOfficer' type='checkbox' value='atOfficer'>
-        <label for='atOfficer'>At a police officer</label>
+      <div class='session'>
+        <h2>Police involvement</h2>
+        <div class='row' id='police'>
+          <input id='byOfficer' type='checkbox' value='byOfficer'>
+          <label for='byOfficer'>By a police officer</label>
+          <input id='atOfficer' type='checkbox' value='atOfficer'>
+          <label for='atOfficer'>At a police officer</label>
+        </div>
       </div>
-    </div>
-    <div class='session'>
-      <h2>Firearm ownership</h2>
-      <div class='row' id='ownership'>
-        <input id='stolen' type='checkbox' value='stolen'>
-        <label for='stolen'>Stolen</label>
-        <input id='familyOwned' type='checkbox' value='familyOwned'>
-        <label for='familyOwned'>Owned by victim/victim's family</label>
+      <div class='session'>
+        <h2>Firearm ownership</h2>
+        <div class='row' id='ownership'>
+          <input id='stolen' type='checkbox' value='stolen'>
+          <label for='stolen'>Stolen</label>
+          <input id='familyOwned' type='checkbox' value='familyOwned'>
+          <label for='familyOwned'>Owned by victim/victim's family</label>
+        </div>
       </div>
     </div>
   </div>
@@ -200,11 +202,22 @@
     }, 'place-city-sm'); // Place polygon under these labels.
 
 
-    var filterDay = ['!=', ['string',['get', 'Day']], 'placeholder'];
+    var year = 2017;
+    var circumstances = [];
 
     d3.json('/static/shootings2500.geojson', function(err, data) {
-      function filterYear(year) {
+      function filterYearAndCircumstances(year, circumstances) {
         var features = data.features.filter(feature => feature.properties.date.includes(year));
+        if (circumstances) {
+          features = features.filter(feature => {
+            for (var i = 0; i < circumstances.length; i++) {
+              if (feature.properties[circumstances[i]] !== "Yes") {
+                return false;
+              }
+            }
+            return true;
+          });
+        }
         var featureCollection = {"type": "FeatureCollection", "features": features};
         return featureCollection;
       }
@@ -214,7 +227,7 @@
       map.addSource('shootings', {
         type: 'geojson',
         // Point to GeoJSON data.
-        data: filterYear(2017),
+        data: filterYearAndCircumstances(year, circumstances),
         cluster: true,
         clusterMaxZoom: 14, // Max zoom to cluster points on
         clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
@@ -294,28 +307,19 @@
 
       // update hour filter when the slider is dragged
       document.getElementById('slider').addEventListener('input', function(e) {
-        var year = parseInt(e.target.value);
+        year = parseInt(e.target.value);
         // update the map
-        map.getSource('shootings').setData(filterYear(year));
+        map.getSource('shootings').setData(filterYearAndCircumstances(year, circumstances));
 
         // update text in the UI
         document.getElementById('active-year').innerText = year;
       });
 
-      <!--document.getElementById('filters').addEventListener('change', function(e) {-->
-        <!--var day = e.target.value;-->
-        <!--// update the map filter-->
-        <!--if (day === 'all') {-->
-          <!--filterDay = ['!=', ['string', ['get','Day']], 'placeholder'];-->
-        <!--} else if (day === 'weekday') {-->
-          <!--filterDay = ['match', ['get', 'Day'], ['Sat', 'Sun'], false, true];-->
-        <!--} else if (day === 'weekend') {-->
-          <!--filterDay = ['match', ['get', 'Day'], ['Sat', 'Sun'], true, false];-->
-        <!--} else {-->
-          <!--console.log('error');-->
-        <!--};-->
-        <!--map.setFilter('collisions', ['all', filterYear, filterDay]);-->
-      <!--});-->
+      document.getElementById('filters').addEventListener('change', function(e) {
+        var checkedBoxes = Array.from(document.querySelectorAll('input[type=checkbox]:checked'));
+        circumstances = checkedBoxes.map(x => x.value);
+        map.getSource('shootings').setData(filterYearAndCircumstances(year, circumstances));
+      });
     });
   });
 
