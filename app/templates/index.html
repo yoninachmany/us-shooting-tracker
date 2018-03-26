@@ -93,6 +93,14 @@
         <div class='label'>1000+</div>
       </div>
     </div>
+    <div class='section'>
+      <h2 id='year-filter'>
+        Filter by year: <input id='year-filter-checkbox' type='checkbox' onclick='checkFilterByYear()'>
+      </h2>
+      <h2 id='month-filter' style='display:none'>
+        Filter by month: <input id='month-check' type='checkbox' onclick='checkFilterByMonth()'>
+      </h2>
+    </div>
     <div class='session'>
       <h2>Year: <label id='active-year'>2000</label></h2>
       <input id='year-slider' class='row' type='range' min='2000' max='2017' step='1' value='2000' />
