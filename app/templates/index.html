@@ -201,7 +201,7 @@
       function filterYear(year) {
         var features = data.features.filter(feature => feature.properties.date.includes(year));
         var featureCollection = {"type": "FeatureCollection", "features": features};
-        return featureCollection
+        return featureCollection;
       }
 
       // Add a new source from our GeoJSON data and set the
