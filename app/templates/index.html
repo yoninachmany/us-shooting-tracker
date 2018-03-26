@@ -97,7 +97,7 @@
       <h2>Year: <label id='active-year'>2017</label></h2>
       <input id='slider' class='row' type='range' min='2000' max='2017' step='1' value='2017' />
     </div>
-    <div id='filters'>
+    <div id='circumstances'>
       <div class='session'>
         <h2>Shooter-victim relationship</h2>
         <div class='row' id='relationship'>
@@ -315,7 +315,7 @@
         document.getElementById('active-year').innerText = year;
       });
 
-      document.getElementById('filters').addEventListener('change', function(e) {
+      document.getElementById('circumstances').addEventListener('change', function(e) {
         var checkedBoxes = Array.from(document.querySelectorAll('input[type=checkbox]:checked'));
         circumstances = checkedBoxes.map(x => x.value);
         map.getSource('shootings').setData(filterBy(year, circumstances));
