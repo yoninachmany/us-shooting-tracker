@@ -337,7 +337,7 @@
 
       new mapboxgl.Popup()
         .setLngLat(coordinates)
-        .setHTML(`<a href=${articleUrl}>${articleTitle}</a>`)
+        .setHTML(`<a href=${articleUrl} target="_blank">${articleTitle}</a>`)
         .addTo(map);
     });
 
