@@ -171,36 +171,23 @@
 
   map.on('load', function() {
     // Add the source to query. In this example we're using
-    // county polygons uploaded as vector tiles
-    map.addSource('counties', {
+    // congressional district polygons uploaded as vector tiles
+    // Source: ftp://ftp2.census.gov/geo/tiger/TIGER2017/CD/
+    map.addSource('districts', {
       type: 'vector',
-      url: 'mapbox://mapbox.82pkq93d'
+      url: 'mapbox://yoninachmany.cxcgq8gk'
     });
 
     map.addLayer({
-      id: 'counties',
+      id: 'districts',
       type: 'fill',
-      source: 'counties',
-      'source-layer': 'original',
+      source: 'districts',
+      'source-layer': 'tl_2017_us_cd115-ahrk3y',
       paint: {
-          'fill-outline-color': 'rgba(0,0,0,0.1)',
+          'fill-outline-color': 'rgba(0,0,0,1)',
           'fill-color': 'rgba(0,0,0,0.1)'
       }
-    }, 'place-city-sm'); // Place polygon under these labels.
-
-    map.addLayer({
-      id: 'counties-highlighted',
-      type: 'fill',
-      source: "counties",
-      'source-layer': 'original',
-      paint: {
-          'fill-outline-color': '#484896',
-          'fill-color': '#6e599f',
-          'fill-opacity': 0.75
-      },
-      filter: ['in', 'COUNTY', '']
-    }, 'place-city-sm'); // Place polygon under these labels.
-
+    });
 
     var year = 2017;
     var circumstances = [];
