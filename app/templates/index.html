@@ -89,8 +89,8 @@
       </div>
     </div>
     <div class='session'>
-      <h2>Year: <label id='active-year'>2018</label></h2>
-      <input id='slider' class='row' type='range' min='2000' max='2018' step='1' value='2018' />
+      <h2>Year: <label id='active-year'>2017</label></h2>
+      <input id='slider' class='row' type='range' min='2000' max='2017' step='1' value='2017' />
     </div>
     <div class='session'>
       <h2>Shooter-victim relationship</h2>
@@ -199,7 +199,7 @@
     var filterDay = ['!=', ['string',['get', 'Day']], 'placeholder'];
 
     d3.json('/static/shootings2500.geojson', function(err, data) {
-      var features = data.features.filter(feature => feature.properties.date.includes(2018));
+      var features = data.features.filter(feature => feature.properties.date.includes(2017));
       var featureCollection = {"type": "FeatureCollection", "features": features};
 
       // Add a new source from our GeoJSON data and set the
