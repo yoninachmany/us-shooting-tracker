@@ -149,6 +149,7 @@
       </div>
     </div>
   </div>
+  <script src='//d3js.org/d3.v3.min.js' charset='utf-8'></script>
   <script>
   mapboxgl.accessToken = 'pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2lqbmpqazdlMDBsdnRva284cWd3bm11byJ9.V6Hg2oYJwMAxeoR9GEzkAA';
   var map = new mapboxgl.Map({
@@ -197,118 +198,118 @@
     var filterHour = ['==', ['number',['get', 'Hour']], 12];
     var filterDay = ['!=', ['string',['get', 'Day']], 'placeholder'];
 
-    // Add a new source from our GeoJSON data and set the
-    // 'cluster' option to true. GL-JS will add the point_count property to your source data.
-    map.addSource('shootings', {
-      type: 'geojson',
-      // Point to GeoJSON data.
-      data: '/static/shootings2500.geojson',
-      cluster: true,
-      clusterMaxZoom: 14, // Max zoom to cluster points on
-      clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+    d3.json('/static/shootings2500.geojson', function(err, data) {
+      // Add a new source from our GeoJSON data and set the
+      // 'cluster' option to true. GL-JS will add the point_count property to your source data.
+      map.addSource('shootings', {
+        type: 'geojson',
+        // Point to GeoJSON data.
+        data: data,
+        cluster: true,
+        clusterMaxZoom: 14, // Max zoom to cluster points on
+        clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+      });
+
+      map.addLayer({
+        id: 'clusters',
+        type: 'circle',
+        source: 'shootings',
+        filter: ['has', 'point_count'],
+        paint: {
+          'circle-color': [
+            'step',
+            ['get', 'point_count'],
+            '#FFEDA0',
+            10,
+            '#FED976',
+            20,
+            '#FEB24C',
+            50,
+            '#FD8D3C',
+            100,
+            '#FC4E2A',
+            200,
+            '#E31A1C',
+            500,
+            '#BD0026',
+            1000,
+            '#800026'
+          ],
+          'circle-radius': [
+            'step',
+            ['get', 'point_count'],
+            20,
+            10,
+            22.5,
+            20,
+            25,
+            50,
+            27.5,
+            100,
+            30,
+            200,
+            32.5,
+            500,
+            35,
+            1000,
+            37.5
+          ],
+        }
+        <!--,'filter': ['all', filterHour, filterDay]-->
+      });
+
+      map.addLayer({
+        id: 'cluster-count',
+        type: 'symbol',
+        source: 'shootings',
+        filter: ['has', 'point_count'],
+        layout: {
+          'text-field': '{point_count_abbreviated}',
+          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+          'text-size': 12
+        }
+      });
+
+      map.addLayer({
+        id: 'unclustered-point',
+        type: 'circle',
+        source: 'shootings',
+        filter: ['!has', 'point_count'],
+        paint: {
+          'circle-color': '#11b4da',
+          'circle-radius': 4,
+          'circle-stroke-width': 1,
+          'circle-stroke-color': '#fff'
+        }
+      });
+
+      // update hour filter when the slider is dragged
+      document.getElementById('slider').addEventListener('input', function(e) {
+        var year = parseInt(e.target.value);
+        // update the map
+        var features = data.features.filter(feature => feature.properties.date.includes(year));
+        var featureCollection = {"type": "FeatureCollection", "features": features};
+        map.getSource('shootings').setData(featureCollection);
+
+        // update text in the UI
+        document.getElementById('active-year').innerText = year;
+      });
+
+      <!--document.getElementById('filters').addEventListener('change', function(e) {-->
+        <!--var day = e.target.value;-->
+        <!--// update the map filter-->
+        <!--if (day === 'all') {-->
+          <!--filterDay = ['!=', ['string', ['get','Day']], 'placeholder'];-->
+        <!--} else if (day === 'weekday') {-->
+          <!--filterDay = ['match', ['get', 'Day'], ['Sat', 'Sun'], false, true];-->
+        <!--} else if (day === 'weekend') {-->
+          <!--filterDay = ['match', ['get', 'Day'], ['Sat', 'Sun'], true, false];-->
+        <!--} else {-->
+          <!--console.log('error');-->
+        <!--};-->
+        <!--map.setFilter('collisions', ['all', filterYear, filterDay]);-->
+      <!--});-->
     });
-
-    map.addLayer({
-      id: 'clusters',
-      type: 'circle',
-      source: 'shootings',
-      filter: ['has', 'point_count'],
-      paint: {
-        'circle-color': [
-          'step',
-          ['get', 'point_count'],
-          '#FFEDA0',
-          10,
-          '#FED976',
-          20,
-          '#FEB24C',
-          50,
-          '#FD8D3C',
-          100,
-          '#FC4E2A',
-          200,
-          '#E31A1C',
-          500,
-          '#BD0026',
-          1000,
-          '#800026'
-        ],
-        'circle-radius': [
-          'step',
-          ['get', 'point_count'],
-          20,
-          10,
-          22.5,
-          20,
-          25,
-          50,
-          27.5,
-          100,
-          30,
-          200,
-          32.5,
-          500,
-          35,
-          1000,
-          37.5
-        ],
-      }
-      <!--,'filter': ['all', filterHour, filterDay]-->
-    });
-
-    map.addLayer({
-      id: 'cluster-count',
-      type: 'symbol',
-      source: 'shootings',
-      filter: ['has', 'point_count'],
-      layout: {
-        'text-field': '{point_count_abbreviated}',
-        'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-        'text-size': 12
-      }
-    });
-
-    map.addLayer({
-      id: 'unclustered-point',
-      type: 'circle',
-      source: 'shootings',
-      filter: ['!has', 'point_count'],
-      paint: {
-        'circle-color': '#11b4da',
-        'circle-radius': 4,
-        'circle-stroke-width': 1,
-        'circle-stroke-color': '#fff'
-      }
-    });
-
-    // update hour filter when the slider is dragged
-    document.getElementById('slider').addEventListener('input', function(e) {
-      var year = parseInt(e.target.value);
-      // update the map
-      filterYear = ['==', ['number', ['get', 'year']], year];
-      map.setFilter('clusters', ['all', filterYear, filterDay]);
-      map.setFilter('cluster-count', ['all', filterYear, filterDay]);
-      map.setFilter('unclustered-point', ['all', filterYear, filterDay]);
-
-      // update text in the UI
-      document.getElementById('active-year').innerText = year;
-    });
-
-    <!--document.getElementById('filters').addEventListener('change', function(e) {-->
-      <!--var day = e.target.value;-->
-      <!--// update the map filter-->
-      <!--if (day === 'all') {-->
-        <!--filterDay = ['!=', ['string', ['get','Day']], 'placeholder'];-->
-      <!--} else if (day === 'weekday') {-->
-        <!--filterDay = ['match', ['get', 'Day'], ['Sat', 'Sun'], false, true];-->
-      <!--} else if (day === 'weekend') {-->
-        <!--filterDay = ['match', ['get', 'Day'], ['Sat', 'Sun'], true, false];-->
-      <!--} else {-->
-        <!--console.log('error');-->
-      <!--};-->
-      <!--map.setFilter('collisions', ['all', filterYear, filterDay]);-->
-    <!--});-->
-
   });
   </script>
 </body>
