@@ -199,21 +199,6 @@
       }
     });
 
-    var months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
-    ];
-
     d3.json('/static/shootings2500.geojson', function(err, data) {
       function filterBy(year, month, circumstances) {
         var features = data.features;
@@ -329,6 +314,21 @@
         // update text in the UI
         document.getElementById('active-year').innerText = year;
       });
+
+      var months = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+      ];
 
       // update month filter when the month slider is dragged
       document.getElementById('month-slider').addEventListener('input', function(e) {
