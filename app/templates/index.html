@@ -206,7 +206,7 @@
     var circumstances = [];
 
     d3.json('/static/shootings2500.geojson', function(err, data) {
-      function filterYearAndCircumstances(year, circumstances) {
+      function filterBy(year, circumstances) {
         var features = data.features.filter(feature => feature.properties.date.includes(year));
         if (circumstances) {
           features = features.filter(feature => {
@@ -227,7 +227,7 @@
       map.addSource('shootings', {
         type: 'geojson',
         // Point to GeoJSON data.
-        data: filterYearAndCircumstances(year, circumstances),
+        data: filterBy(year, circumstances),
         cluster: true,
         clusterMaxZoom: 14, // Max zoom to cluster points on
         clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
@@ -309,7 +309,7 @@
       document.getElementById('slider').addEventListener('input', function(e) {
         year = parseInt(e.target.value);
         // update the map
-        map.getSource('shootings').setData(filterYearAndCircumstances(year, circumstances));
+        map.getSource('shootings').setData(filterBy(year, circumstances));
 
         // update text in the UI
         document.getElementById('active-year').innerText = year;
@@ -318,7 +318,7 @@
       document.getElementById('filters').addEventListener('change', function(e) {
         var checkedBoxes = Array.from(document.querySelectorAll('input[type=checkbox]:checked'));
         circumstances = checkedBoxes.map(x => x.value);
-        map.getSource('shootings').setData(filterYearAndCircumstances(year, circumstances));
+        map.getSource('shootings').setData(filterBy(year, circumstances));
       });
     });
   });
