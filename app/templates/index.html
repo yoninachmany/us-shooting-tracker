@@ -95,7 +95,11 @@
     </div>
     <div class='session'>
       <h2>Year: <label id='active-year'>2017</label></h2>
-      <input id='slider' class='row' type='range' min='2000' max='2017' step='1' value='2017' />
+      <input id='year-slider' class='row' type='range' min='2000' max='2017' step='1' value='2000' />
+    </div>
+    <div class='session'>
+      <h2>Month: <label id='active-month'>January</label></h2>
+      <input id='month-slider' class='row' type='range' min='0' max='11' step='1' value='0' />
     </div>
     <div id='circumstances'>
       <div class='session'>
@@ -189,12 +193,34 @@
       }
     });
 
-    var year = 2017;
+    var year = 2000;
+    var month = 0;
     var circumstances = [];
 
+    var months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ];
+
     d3.json('/static/shootings2500.geojson', function(err, data) {
-      function filterBy(year, circumstances) {
-        var features = data.features.filter(feature => feature.properties.date.includes(year));
+      function filterBy(year, month, circumstances) {
+        var features = data.features;
+        if (year) {
+          features = features.filter(feature => new Date(feature.properties.date).getFullYear() === year);
+        }
+        if (month) {
+          features = features.filter(feature => new Date(feature.properties.date).getMonth() === month);
+        }
         if (circumstances) {
           features = features.filter(feature => {
             for (var i = 0; i < circumstances.length; i++) {
@@ -214,7 +240,7 @@
       map.addSource('shootings', {
         type: 'geojson',
         // Point to GeoJSON data.
-        data: filterBy(year, circumstances),
+        data: filterBy(year, month, circumstances),
         cluster: true,
         clusterMaxZoom: 14, // Max zoom to cluster points on
         clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
@@ -292,20 +318,30 @@
         }
       });
 
-      // update hour filter when the slider is dragged
-      document.getElementById('slider').addEventListener('input', function(e) {
+      // update year filter when the year slider is dragged
+      document.getElementById('year-slider').addEventListener('input', function(e) {
         year = parseInt(e.target.value);
         // update the map
-        map.getSource('shootings').setData(filterBy(year, circumstances));
+        map.getSource('shootings').setData(filterBy(year, month, circumstances));
 
         // update text in the UI
         document.getElementById('active-year').innerText = year;
       });
 
+      // update month filter when the month slider is dragged
+      document.getElementById('month-slider').addEventListener('input', function(e) {
+        month = parseInt(e.target.value);
+        // update the map
+        map.getSource('shootings').setData(filterBy(year, month, circumstances));
+
+        // update text in the UI
+        document.getElementById('active-month').innerText = months[month];
+      });
+
       document.getElementById('circumstances').addEventListener('change', function(e) {
         var checkedBoxes = Array.from(document.querySelectorAll('input[type=checkbox]:checked'));
         circumstances = checkedBoxes.map(x => x.value);
-        map.getSource('shootings').setData(filterBy(year, circumstances));
+        map.getSource('shootings').setData(filterBy(year, month, circumstances));
       });
     });
   });
