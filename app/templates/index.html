@@ -200,7 +200,7 @@
     });
 
     d3.json('/static/shootings2500.geojson', function(err, data) {
-      function filterBy(year, month, circumstances) {
+      function filterBy(data, year, month, circumstances) {
         var features = data.features;
         if (year) {
           features = features.filter(feature => new Date(feature.properties.date).getFullYear() === year);
@@ -227,7 +227,7 @@
       map.addSource('shootings', {
         type: 'geojson',
         // Point to GeoJSON data.
-        data: filterBy(year, month, circumstances),
+        data: filterBy(data, year, month, circumstances),
         cluster: true,
         clusterMaxZoom: 14, // Max zoom to cluster points on
         clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
@@ -309,7 +309,7 @@
       document.getElementById('year-slider').addEventListener('input', function(e) {
         year = parseInt(e.target.value);
         // update the map
-        map.getSource('shootings').setData(filterBy(year, month, circumstances));
+        map.getSource('shootings').setData(filterBy(data, year, month, circumstances));
 
         // update text in the UI
         document.getElementById('active-year').innerText = year;
@@ -334,7 +334,7 @@
       document.getElementById('month-slider').addEventListener('input', function(e) {
         month = parseInt(e.target.value);
         // update the map
-        map.getSource('shootings').setData(filterBy(year, month, circumstances));
+        map.getSource('shootings').setData(filterBy(data, year, month, circumstances));
 
         // update text in the UI
         document.getElementById('active-month').innerText = months[month];
@@ -343,7 +343,7 @@
       document.getElementById('circumstances').addEventListener('change', function(e) {
         var checkedBoxes = Array.from(document.querySelectorAll('input[type=checkbox]:checked'));
         circumstances = checkedBoxes.map(x => x.value);
-        map.getSource('shootings').setData(filterBy(year, month, circumstances));
+        map.getSource('shootings').setData(filterBy(data, year, month, circumstances));
       });
     });
   });
