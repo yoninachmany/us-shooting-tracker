@@ -195,7 +195,6 @@
     }, 'place-city-sm'); // Place polygon under these labels.
 
 
-    var filterHour = ['==', ['number',['get', 'Hour']], 12];
     var filterDay = ['!=', ['string',['get', 'Day']], 'placeholder'];
 
     d3.json('/static/shootings2500.geojson', function(err, data) {
@@ -261,7 +260,6 @@
             37.5
           ],
         }
-        <!--,'filter': ['all', filterHour, filterDay]-->
       });
 
       map.addLayer({
