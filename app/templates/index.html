@@ -98,7 +98,7 @@
         Filter by year: <input id='year-filter-checkbox' type='checkbox' onclick='checkFilterByYear()'>
       </h2>
       <h2 id='month-filter' style='display:none'>
-        Filter by month: <input id='month-check' type='checkbox' onclick='checkFilterByMonth()'>
+        Filter by month: <input id='month-filter-checkbox' type='checkbox' onclick='checkFilterByMonth()'>
       </h2>
     </div>
     <div id='year-session' class='session' style='display:none'>
@@ -393,36 +393,47 @@
   function checkFilterByYear() {
     var yearCheckBox = document.getElementById("year-filter-checkbox");
     var monthFilter = document.getElementById("month-filter");
+    var monthCheckBox = document.getElementById("month-filter-checkbox");
+
     var yearSession = document.getElementById("year-session");
     var monthSession = document.getElementById("month-session");
-    if (yearCheckBox.checked == true){
-       yearSession.style.display = "block";
-       monthFilter.style.display = "block";
 
-       year = 2000;
-       map.getSource('shootings').setData(filterBy(savedData, year, month, circumstances));
+    if (yearCheckBox.checked == true) {
+      monthFilter.style.display = "block";
+      yearSession.style.display = "block";
+
+      year = 2000;
+      map.getSource('shootings').setData(filterBy(savedData, year, month, circumstances));
 
       // update text in the UI
       document.getElementById('active-year').innerText = year;
     } else {
-       yearSession.style.display = "none";
-       monthFilter.style.display = "none";
+      monthFilter.style.display = "none";
+      monthCheckBox.checked = false;
 
+      yearSession.style.display = "none";
+      monthSession.style.display = "none";
+
+      month = null;
       year = null;
       map.getSource('shootings').setData(filterBy(savedData, year, month, circumstances));
     }
   }
 
   function checkFilterByMonth() {
-    var monthCheckBox = document.getElementById("month-check");
     var monthFilter = document.getElementById("month-filter");
+    var monthCheckBox = document.getElementById("month-filter-checkbox");
+
     var monthSession = document.getElementById("month-session");
-    if (monthCheckBox.checked == true){
+
+    if (monthCheckBox.checked == true) {
       monthSession.style.display = "block";
 
       month = 0;
       map.getSource('shootings').setData(filterBy(savedData, year, month, circumstances));
     } else {
+      monthCheckBox.checked = false;
+
       monthSession.style.display = "none";
 
       month = null;
