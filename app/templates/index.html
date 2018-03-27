@@ -370,13 +370,13 @@
 
   function filterBy(data, year, month, circumstances) {
     var features = data.features;
-    if (year) {
+    if (year != null) {
       features = features.filter(feature => new Date(feature.properties.date).getFullYear() === year);
     }
-    if (month) {
+    if (month != null) {
       features = features.filter(feature => new Date(feature.properties.date).getMonth() === month);
     }
-    if (circumstances) {
+    if (circumstances != null) {
       features = features.filter(feature => {
         for (var i = 0; i < circumstances.length; i++) {
           if (feature.properties[circumstances[i]] !== "Yes") {
@@ -415,11 +415,18 @@
 
   function checkFilterByMonth() {
     var monthCheckBox = document.getElementById("month-check");
+    var monthFilter = document.getElementById("month-filter");
     var monthSession = document.getElementById("month-session");
     if (monthCheckBox.checked == true){
-       monthSession.style.display = "block";
+      monthSession.style.display = "block";
+
+      month = 0;
+      map.getSource('shootings').setData(filterBy(savedData, year, month, circumstances));
     } else {
-       monthSession.style.display = "none";
+      monthSession.style.display = "none";
+
+      month = null;
+      map.getSource('shootings').setData(filterBy(savedData, year, month, circumstances));
     }
   }
   </script>
