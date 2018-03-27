@@ -417,15 +417,18 @@
   }
 
   function checkFilterByMonth() {
-    var monthCheckBox = document.getElementById("month-check");
     var monthFilter = document.getElementById("month-filter");
+    var monthCheckBox = document.getElementById("month-check");
+
     var monthSession = document.getElementById("month-session");
-    if (monthCheckBox.checked == true){
+
+    if (monthCheckBox.checked == true) {
       monthSession.style.display = "block";
 
       month = 0;
       map.getSource('shootings').setData(filterBy(savedData, year, month, circumstances));
     } else {
+      monthCheckBox.checked = false;q
       monthSession.style.display = "none";
 
       month = null;
