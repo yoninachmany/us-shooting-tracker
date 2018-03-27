@@ -368,7 +368,20 @@
     map.getCanvas().style.cursor = '';
   });
 
+  // This will let you use the .remove() function later on
+  if (!('remove' in Element.prototype)) {
+    Element.prototype.remove = function() {
+      if (this.parentNode) {
+        this.parentNode.removeChild(this);
+      }
+    };
+  }
+
   function filterBy(data, year, month, circumstances) {
+    var popUps = document.getElementsByClassName('mapboxgl-popup');
+    // Check if there is already a popup on the map and if so, remove it
+    if (popUps[0]) popUps[0].remove();
+
     var features = data.features;
     if (year != null) {
       features = features.filter(feature => new Date(feature.properties.date).getFullYear() === year);
