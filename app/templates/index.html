@@ -98,7 +98,7 @@
         Filter by year: <input id='year-filter-checkbox' type='checkbox' onclick='checkFilterByYear()'>
       </h2>
       <h2 id='month-filter' style='display:none'>
-        Filter by month: <input id='month-check' type='checkbox' onclick='checkFilterByMonth()'>
+        Filter by month: <input id='month-filter-checkbox' type='checkbox' onclick='checkFilterByMonth()'>
       </h2>
     </div>
     <div id='year-session' class='session' style='display:none'>
@@ -420,7 +420,7 @@
 
   function checkFilterByMonth() {
     var monthFilter = document.getElementById("month-filter");
-    var monthCheckBox = document.getElementById("month-check");
+    var monthCheckBox = document.getElementById("month-filter-checkbox");
 
     var monthSession = document.getElementById("month-session");
 
