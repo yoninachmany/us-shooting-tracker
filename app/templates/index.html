@@ -101,11 +101,11 @@
         Filter by month: <input id='month-check' type='checkbox' onclick='checkFilterByMonth()'>
       </h2>
     </div>
-    <div class='session'>
+    <div id='year-session' class='session' style='display:none'>
       <h2>Year: <label id='active-year'>2000</label></h2>
       <input id='year-slider' class='row' type='range' min='2000' max='2017' step='1' value='2000' />
     </div>
-    <div class='session'>
+    <div id='month-session' class='session' style='display:none'>
       <h2>Month: <label id='active-month'>January</label></h2>
       <input id='month-slider' class='row' type='range' min='0' max='11' step='1' value='0' />
     </div>
@@ -181,11 +181,11 @@
   // Add zoom and rotation controls to the map.
   map.addControl(new mapboxgl.NavigationControl());
 
-  var data = null;
+  var data;
 
-  var year = null;
-  var month = null;
-  var circumstances = null;
+  var year;
+  var month;
+  var circumstances;
 
   map.on('load', function() {
     // Add the source to query. In this example we're using
@@ -208,6 +208,7 @@
     });
 
     d3.json('/static/shootings2500.geojson', function(err, data) {
+      savedData = data;
 
       // Add a new source from our GeoJSON data and set the
       // 'cluster' option to true. GL-JS will add the point_count property to your source data.
@@ -387,6 +388,39 @@
     }
     var featureCollection = {"type": "FeatureCollection", "features": features};
     return featureCollection;
+  }
+
+  function checkFilterByYear() {
+    var yearCheckBox = document.getElementById("year-filter-checkbox");
+    var monthFilter = document.getElementById("month-filter");
+    var yearSession = document.getElementById("year-session");
+    var monthSession = document.getElementById("month-session");
+    if (yearCheckBox.checked == true){
+       yearSession.style.display = "block";
+       monthFilter.style.display = "block";
+
+       year = 2000;
+       map.getSource('shootings').setData(filterBy(savedData, year, month, circumstances));
+
+      // update text in the UI
+      document.getElementById('active-year').innerText = year;
+    } else {
+       yearSession.style.display = "none";
+       monthFilter.style.display = "none";
+
+      year = null;
+      map.getSource('shootings').setData(filterBy(savedData, year, month, circumstances));
+    }
+  }
+
+  function checkFilterByMonth() {
+    var monthCheckBox = document.getElementById("month-check");
+    var monthSession = document.getElementById("month-session");
+    if (monthCheckBox.checked == true){
+       monthSession.style.display = "block";
+    } else {
+       monthSession.style.display = "none";
+    }
   }
   </script>
 </body>
