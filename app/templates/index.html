@@ -93,11 +93,19 @@
         <div class='label'>1000+</div>
       </div>
     </div>
-    <div class='session'>
+    <div class='section'>
+      <h2 id='year-filter'>
+        Filter by year: <input id='year-filter-checkbox' type='checkbox' onclick='checkFilterByYear()'>
+      </h2>
+      <h2 id='month-filter' style='display:none'>
+        Filter by month: <input id='month-check' type='checkbox' onclick='checkFilterByMonth()'>
+      </h2>
+    </div>
+    <div id='year-session' class='session' style='display:none'>
       <h2>Year: <label id='active-year'>2000</label></h2>
       <input id='year-slider' class='row' type='range' min='2000' max='2017' step='1' value='2000' />
     </div>
-    <div class='session'>
+    <div id='month-session' class='session' style='display:none'>
       <h2>Month: <label id='active-month'>January</label></h2>
       <input id='month-slider' class='row' type='range' min='0' max='11' step='1' value='0' />
     </div>
@@ -173,6 +181,12 @@
   // Add zoom and rotation controls to the map.
   map.addControl(new mapboxgl.NavigationControl());
 
+  var data;
+
+  var year;
+  var month;
+  var circumstances;
+
   map.on('load', function() {
     // Add the source to query. In this example we're using
     // congressional district polygons uploaded as vector tiles
@@ -193,54 +207,15 @@
       }
     });
 
-    var year = 2000;
-    var month = 0;
-    var circumstances = [];
-
-    var months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
-    ];
-
     d3.json('/static/shootings2500.geojson', function(err, data) {
-      function filterBy(year, month, circumstances) {
-        var features = data.features;
-        if (year) {
-          features = features.filter(feature => new Date(feature.properties.date).getFullYear() === year);
-        }
-        if (month) {
-          features = features.filter(feature => new Date(feature.properties.date).getMonth() === month);
-        }
-        if (circumstances) {
-          features = features.filter(feature => {
-            for (var i = 0; i < circumstances.length; i++) {
-              if (feature.properties[circumstances[i]] !== "Yes") {
-                return false;
-              }
-            }
-            return true;
-          });
-        }
-        var featureCollection = {"type": "FeatureCollection", "features": features};
-        return featureCollection;
-      }
+      savedData = data;
 
       // Add a new source from our GeoJSON data and set the
       // 'cluster' option to true. GL-JS will add the point_count property to your source data.
       map.addSource('shootings', {
         type: 'geojson',
         // Point to GeoJSON data.
-        data: filterBy(year, month, circumstances),
+        data: filterBy(data, year, month, circumstances),
         cluster: true,
         clusterMaxZoom: 14, // Max zoom to cluster points on
         clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
@@ -322,17 +297,32 @@
       document.getElementById('year-slider').addEventListener('input', function(e) {
         year = parseInt(e.target.value);
         // update the map
-        map.getSource('shootings').setData(filterBy(year, month, circumstances));
+        map.getSource('shootings').setData(filterBy(data, year, month, circumstances));
 
         // update text in the UI
         document.getElementById('active-year').innerText = year;
       });
 
+      var months = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+      ];
+
       // update month filter when the month slider is dragged
       document.getElementById('month-slider').addEventListener('input', function(e) {
         month = parseInt(e.target.value);
         // update the map
-        map.getSource('shootings').setData(filterBy(year, month, circumstances));
+        map.getSource('shootings').setData(filterBy(data, year, month, circumstances));
 
         // update text in the UI
         document.getElementById('active-month').innerText = months[month];
@@ -341,42 +331,104 @@
       document.getElementById('circumstances').addEventListener('change', function(e) {
         var checkedBoxes = Array.from(document.querySelectorAll('input[type=checkbox]:checked'));
         circumstances = checkedBoxes.map(x => x.value);
-        map.getSource('shootings').setData(filterBy(year, month, circumstances));
+        map.getSource('shootings').setData(filterBy(data, year, month, circumstances));
       });
     });
   });
 
-    // When a click event occurs on a feature in the unclustered-point layer, open a popup at the
-    // location of the feature, with description HTML from its properties.
-    map.on('click', 'unclustered-point', function (e) {
-      map.flyTo({center: e.features[0].geometry.coordinates});
+  // When a click event occurs on a feature in the unclustered-point layer, open a popup at the
+  // location of the feature, with description HTML from its properties.
+  map.on('click', 'unclustered-point', function (e) {
+    map.flyTo({center: e.features[0].geometry.coordinates});
 
-      var coordinates = e.features[0].geometry.coordinates.slice();
-      var articleUrl = e.features[0].properties.articleUrl;
-      var articleTitle = e.features[0].properties.articleTitle;
+    var coordinates = e.features[0].geometry.coordinates.slice();
+    var articleUrl = e.features[0].properties.articleUrl;
+    var articleTitle = e.features[0].properties.articleTitle;
 
-      // Ensure that if the map is zoomed out such that multiple
-      // copies of the feature are visible, the popup appears
-      // over the copy being pointed to.
-      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-      }
+    // Ensure that if the map is zoomed out such that multiple
+    // copies of the feature are visible, the popup appears
+    // over the copy being pointed to.
+    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+    }
 
-      new mapboxgl.Popup()
-        .setLngLat(coordinates)
-        .setHTML(`<a href=${articleUrl} target="_blank">${articleTitle}</a>`)
-        .addTo(map);
-    });
+    new mapboxgl.Popup()
+      .setLngLat(coordinates)
+      .setHTML(`<a href=${articleUrl} target="_blank">${articleTitle}</a>`)
+      .addTo(map);
+  });
 
-    // Change the cursor to a pointer when the mouse is over the unclustered-point layer.
-    map.on('mouseenter', 'unclustered-point', function () {
-      map.getCanvas().style.cursor = 'pointer';
-    });
+  // Change the cursor to a pointer when the mouse is over the unclustered-point layer.
+  map.on('mouseenter', 'unclustered-point', function () {
+    map.getCanvas().style.cursor = 'pointer';
+  });
 
-    // Change it back to a pointer when it leaves.
-    map.on('mouseleave', 'unclustered-point', function () {
-      map.getCanvas().style.cursor = '';
-    });
+  // Change it back to a pointer when it leaves.
+  map.on('mouseleave', 'unclustered-point', function () {
+    map.getCanvas().style.cursor = '';
+  });
+
+  function filterBy(data, year, month, circumstances) {
+    var features = data.features;
+    if (year != null) {
+      features = features.filter(feature => new Date(feature.properties.date).getFullYear() === year);
+    }
+    if (month != null) {
+      features = features.filter(feature => new Date(feature.properties.date).getMonth() === month);
+    }
+    if (circumstances != null) {
+      features = features.filter(feature => {
+        for (var i = 0; i < circumstances.length; i++) {
+          if (feature.properties[circumstances[i]] !== "Yes") {
+            return false;
+          }
+        }
+        return true;
+      });
+    }
+    var featureCollection = {"type": "FeatureCollection", "features": features};
+    return featureCollection;
+  }
+
+  function checkFilterByYear() {
+    var yearCheckBox = document.getElementById("year-filter-checkbox");
+    var monthFilter = document.getElementById("month-filter");
+    var yearSession = document.getElementById("year-session");
+    var monthSession = document.getElementById("month-session");
+    if (yearCheckBox.checked == true){
+       yearSession.style.display = "block";
+       monthFilter.style.display = "block";
+
+       year = 2000;
+       map.getSource('shootings').setData(filterBy(savedData, year, month, circumstances));
+
+      // update text in the UI
+      document.getElementById('active-year').innerText = year;
+    } else {
+       yearSession.style.display = "none";
+       monthFilter.style.display = "none";
+
+      year = null;
+      map.getSource('shootings').setData(filterBy(savedData, year, month, circumstances));
+    }
+  }
+
+  function checkFilterByMonth() {
+    var monthCheckBox = document.getElementById("month-check");
+    var monthFilter = document.getElementById("month-filter");
+    var monthSession = document.getElementById("month-session");
+    if (monthCheckBox.checked == true){
+      monthSession.style.display = "block";
+
+      month = 0;
+      map.getSource('shootings').setData(filterBy(savedData, year, month, circumstances));
+    } else {
+      monthSession.style.display = "none";
+
+      month = null;
+      map.getSource('shootings').setData(filterBy(savedData, year, month, circumstances));
+    }
+  }
   </script>
 </body>
 
