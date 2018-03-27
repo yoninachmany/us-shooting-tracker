@@ -412,7 +412,9 @@
       monthCheckBox.checked = false;
 
       yearSession.style.display = "none";
+      monthSession.style.display = "none";
 
+      month = null;
       year = null;
       map.getSource('shootings').setData(filterBy(savedData, year, month, circumstances));
     }
