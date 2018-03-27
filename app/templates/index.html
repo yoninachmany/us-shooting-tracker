@@ -393,6 +393,7 @@
   function checkFilterByYear() {
     var yearCheckBox = document.getElementById("year-filter-checkbox");
     var monthFilter = document.getElementById("month-filter");
+    var monthCheckBox = document.getElementById("month-filter-checkbox");
 
     var yearSession = document.getElementById("year-session");
     var monthSession = document.getElementById("month-session");
@@ -408,8 +409,9 @@
       document.getElementById('active-year').innerText = year;
     } else {
       monthFilter.style.display = "none";
-      yearSession.style.display = "none";
+      monthCheckBox.checked = false;
 
+      yearSession.style.display = "none";
 
       year = null;
       map.getSource('shootings').setData(filterBy(savedData, year, month, circumstances));
@@ -428,7 +430,8 @@
       month = 0;
       map.getSource('shootings').setData(filterBy(savedData, year, month, circumstances));
     } else {
-      monthCheckBox.checked = false;q
+      monthCheckBox.checked = false;
+
       monthSession.style.display = "none";
 
       month = null;
