@@ -329,7 +329,7 @@
       });
 
       document.getElementById('circumstances').addEventListener('change', function(e) {
-        var checkedBoxes = Array.from(document.querySelectorAll('input[type=checkbox]:checked'));
+        var checkedBoxes = Array.from(document.querySelectorAll('#circumstances input[type=checkbox]:checked'));
         circumstances = checkedBoxes.map(x => x.value);
         map.getSource('shootings').setData(filterBy(data, year, month, circumstances));
       });
