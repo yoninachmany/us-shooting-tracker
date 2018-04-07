@@ -9,3 +9,4 @@ python-editor==1.0.3
 six==1.11.0
 Werkzeug==0.14.1
 gunicorn==19.7.1
+geojson=2.3.0
