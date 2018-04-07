@@ -4,7 +4,8 @@
 
 <head>
   <meta charset='utf-8' />
-  <title>US firearm violence incidents</title>
+  <title>Mapping Gun Violence</title>
+  <link rel='icon' href="/static/favicon.ico"/>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
   <script src='https://api.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js'></script>
   <link href='https://api.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
@@ -217,7 +218,7 @@
         // Point to GeoJSON data.
         data: filterBy(data, year, month, circumstances),
         cluster: true,
-        clusterMaxZoom: 14, // Max zoom to cluster points on
+        clusterMaxZoom: 10, // Max zoom to cluster points on
         clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
       });
 
@@ -329,7 +330,7 @@
       });
 
       document.getElementById('circumstances').addEventListener('change', function(e) {
-        var checkedBoxes = Array.from(document.querySelectorAll('input[type=checkbox]:checked'));
+        var checkedBoxes = Array.from(document.querySelectorAll('#circumstances input[type=checkbox]:checked'));
         circumstances = checkedBoxes.map(x => x.value);
         map.getSource('shootings').setData(filterBy(data, year, month, circumstances));
       });
@@ -368,7 +369,20 @@
     map.getCanvas().style.cursor = '';
   });
 
+  // This will let you use the .remove() function later on
+  if (!('remove' in Element.prototype)) {
+    Element.prototype.remove = function() {
+      if (this.parentNode) {
+        this.parentNode.removeChild(this);
+      }
+    };
+  }
+
   function filterBy(data, year, month, circumstances) {
+    var popUps = document.getElementsByClassName('mapboxgl-popup');
+    // Check if there is already a popup on the map and if so, remove it
+    if (popUps[0]) popUps[0].remove();
+
     var features = data.features;
     if (year != null) {
       features = features.filter(feature => new Date(feature.properties.date).getFullYear() === year);
