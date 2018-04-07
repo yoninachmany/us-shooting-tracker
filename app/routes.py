@@ -18,7 +18,7 @@ def download():
     """Download a csv file of all the data."""
 
     current_date = str(datetime.date.today())
-    csv_name = 'data-dump-' + current_date + '.csv'
+    csv_name = 'mapping-gun-violence-dump-' + current_date + '.csv'
 
     cd = os.path.dirname(__file__)
     with open(os.path.join(cd, 'static/final-output.geojson')) as f:
@@ -45,7 +45,7 @@ def download():
         'familyOwned': 'The firearm was owned by the victim/victims family'
     }
 
-    fieldnames = ['coordinates', 'url', 'title', 'date', 'time',
+    fieldnames = ['title', 'url', 'date', 'time', 'coordinates',
                   'The shooter and the victim knew each other',
                   'The incident was a case of domestic violence',
                   'The firearm was used during another crime',
