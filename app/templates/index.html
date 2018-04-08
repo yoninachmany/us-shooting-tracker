@@ -45,6 +45,8 @@
     width: 360px;
     background-color: white;
     padding: 10px 20px;
+    overflow: auto;
+    max-height: 95vh;
   }
 
   .session {
@@ -77,8 +79,13 @@
 <body>
   <div id='map'></div>
   <div id='console'>
-    <h1>Firearm violence incidents</h1>
-    <p>Data: <a href='http://gun-violence.org/download/'>Firearm violence injuries and death</a> in USA</p>
+    <h1>Mapping Gun Violence</h1>
+    <p>Using machine learning to extract key information from gun violence articles
+       and enable research and advocacy. Predictions may be inaccurate.</p>
+    <div class='session'>
+      <p><a href="{{ url_for('download') }}">Download</a> raw data.
+      Read more on <a href="">about page</a>.</p>
+    </div>
     <div class='session'>
       <h2>Incidents</h2>
       <div class='row colors'>
@@ -208,7 +215,7 @@
       }
     });
 
-    d3.json('/static/shootings2500.geojson', function(err, data) {
+    d3.json('/static/final-output.geojson', function(err, data) {
       savedData = data;
 
       // Add a new source from our GeoJSON data and set the
