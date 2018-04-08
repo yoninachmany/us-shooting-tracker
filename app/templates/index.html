@@ -81,7 +81,11 @@
   <div id='console'>
     <h1>Mapping Gun Violence</h1>
     <p>Using machine learning to extract key information from gun violence articles
-       and enable research and advocacy. Note: predictions may be incorrect.</p>
+       and enable research and advocacy. Predictions may be inaccurate.</p>
+    <div class='session'>
+      <p><a href="{{ url_for('download') }}">Download</a> raw data.
+      Read more on <a href="">about page</a>.</p>
+    </div>
     <div class='session'>
       <h2>Incidents</h2>
       <div class='row colors'>
@@ -169,11 +173,6 @@
           <input id='familyOwned' type='checkbox' value='familyOwned'>
           <label for='familyOwned'>Owned by victim/victim's family</label>
         </div>
-      </div>
-      <hr>
-      <div class='session'>
-        <p><a href="{{ url_for('download') }}">Download</a> raw data.
-        Read more on <a href="">about page</a>.</p>
       </div>
     </div>
   </div>
