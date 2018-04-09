@@ -46,6 +46,8 @@
     width: 360px;
     background-color: white;
     padding: 10px 20px;
+    overflow: auto;
+    max-height: 95vh;
   }
 
   .session {
@@ -93,8 +95,13 @@
 <body>
   <div id='map'></div>
   <div id='console'>
-    <h1>Firearm violence incidents</h1>
-    <p>Data: <a href='http://gun-violence.org/download/'>Firearm violence injuries and death</a> in USA</p>
+    <h1>Mapping Gun Violence</h1>
+    <p>Using machine learning to extract key information from gun violence articles
+       and enable research and advocacy. Predictions may be inaccurate.</p>
+    <div class='session'>
+      <p><a href="{{ url_for('download') }}">Download</a> raw data.
+      Read more on <a href="">about page</a>.</p>
+    </div>
     <div class='session'>
       <h2>Incidents</h2>
       <div class='row colors'>
@@ -225,12 +232,25 @@
       source: 'districts',
       'source-layer': 'tl_2017_us_cd115-ahrk3y',
       paint: {
-          'fill-outline-color': 'rgba(0,0,0,0.5)',
-          'fill-color': 'rgba(0,0,0,0.1)'
+        'fill-outline-color': 'rgba(0,0,0,0.5)',
+        'fill-color': 'rgba(0,0,0,0.1)'
       }
     });
 
-    d3.json('/static/shootings2500.geojson', function(err, data) {
+    map.addLayer({
+      id: 'districts-highlighted',
+      type: 'fill',
+      source: 'districts',
+      'source-layer': 'tl_2017_us_cd115-ahrk3y',
+      paint: {
+        'fill-outline-color': '#484896',
+        'fill-color': '#6e599f',
+        'fill-opacity': 0.5
+      },
+      filter: ['in', 'GEOID', '']
+    });
+
+    d3.json('/static/final-output.geojson', function(err, data) {
       savedData = data;
 
       // Add a new source from our GeoJSON data and set the
@@ -240,7 +260,7 @@
         // Point to GeoJSON data.
         data: filterBy(data, year, month, circumstances),
         cluster: true,
-        clusterMaxZoom: 14, // Max zoom to cluster points on
+        clusterMaxZoom: 10, // Max zoom to cluster points on
         clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
       });
 
@@ -359,6 +379,55 @@
     });
   });
 
+  var popup = new mapboxgl.Popup({
+    closeButton: false
+  });
+
+  var state_abvs = {
+    '30': 'MT', '54': 'WV', '42': 'PA', '48': 'TX', '45': 'SC', '50': 'VT',
+    '60': 'AS', '49': 'UT', '66': 'GU', '69': 'MP', '53': 'WA', '02': 'AK',
+    '25': 'MA', '26': 'MI', '01': 'AL', '06': 'CA', '21': 'KY', '04': 'AZ',
+    '05': 'AR', '46': 'SD', '47': 'TN', '08': 'CO', '09': 'CT', '28': 'MS',
+    '29': 'MO', '40': 'OK', '41': 'OR', '51': 'VA', '24': 'MD', '56': 'WY',
+    '39': 'OH', '27': 'MN', '72': 'PR', '20': 'KS', '38': 'ND', '78': 'VI',
+    '11': 'DC', '10': 'DE', '13': 'GA', '12': 'FL', '15': 'HI', '22': 'LA',
+    '17': 'IL', '16': 'ID', '19': 'IA', '18': 'IN', '31': 'NE', '23': 'ME',
+    '37': 'NC', '36': 'NY', '35': 'NM', '34': 'NJ', '33': 'NH', '55': 'WI',
+    '74': 'UM', '32': 'NV', '44': 'RI'
+  };
+
+  map.on('mousemove', 'districts', function(e) {
+    // Single out the first found feature.
+    var feature = e.features[0];
+
+    // Add the feature with the district id to the highlighted layer.
+    map.setFilter('districts-highlighted', ['in', 'GEOID', feature.properties.GEOID]);
+
+    // Display a popup with the name of the district
+    popup.setLngLat(e.lngLat)
+      .setText(state_abvs[feature.properties.STATEFP] + '-' + feature.properties.CD115FP)
+      .addTo(map);
+  });
+
+  map.on('mouseleave', 'counties', function() {
+    popup.remove();
+    map.setFilter('districts-highlighted', ['in', 'GEOID', '']);
+  });
+
+  // When a click event occurs on a feature in the clusters layer, zoom in.
+  map.on('click', 'clusters', function (e) {
+    map.flyTo({center: e.features[0].geometry.coordinates, zoom: map.getZoom() + 1});
+
+    var coordinates = e.features[0].geometry.coordinates.slice();
+
+    // Ensure that if the map is zoomed out such that multiple
+    // copies of the feature are visible, the popup appears
+    // over the copy being pointed to.
+    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+    }
+  });
+
   // When a click event occurs on a feature in the unclustered-point layer, open a popup at the
   // location of the feature, with description HTML from its properties.
   map.on('click', 'unclustered-point', function (e) {
@@ -392,6 +461,16 @@
       .setLngLat(coordinates)
       .setHTML(`<a href=${articleUrl} target="_blank">${articleTitle}</a>`)
       .addTo(map);
+  });
+
+  // Change the cursor to a pointer when the mouse is over the clusters layer.
+  map.on('mouseenter', 'clusters', function () {
+    map.getCanvas().style.cursor = 'pointer';
+  });
+
+  // Change it back to a pointer when it leaves.
+  map.on('mouseleave', 'clusters', function () {
+    map.getCanvas().style.cursor = '';
   });
 
   // Change the cursor to a pointer when the mouse is over the unclustered-point layer.
