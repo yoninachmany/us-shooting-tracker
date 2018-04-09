@@ -361,6 +361,19 @@
     closeButton: false
   });
 
+  var state_abvs = {
+    '30': 'MT', '54': 'WV', '42': 'PA', '48': 'TX', '45': 'SC', '50': 'VT',
+    '60': 'AS', '49': 'UT', '66': 'GU', '69': 'MP', '53': 'WA', '02': 'AK',
+    '25': 'MA', '26': 'MI', '01': 'AL', '06': 'CA', '21': 'KY', '04': 'AZ',
+    '05': 'AR', '46': 'SD', '47': 'TN', '08': 'CO', '09': 'CT', '28': 'MS',
+    '29': 'MO', '40': 'OK', '41': 'OR', '51': 'VA', '24': 'MD', '56': 'WY',
+    '39': 'OH', '27': 'MN', '72': 'PR', '20': 'KS', '38': 'ND', '78': 'VI',
+    '11': 'DC', '10': 'DE', '13': 'GA', '12': 'FL', '15': 'HI', '22': 'LA',
+    '17': 'IL', '16': 'ID', '19': 'IA', '18': 'IN', '31': 'NE', '23': 'ME',
+    '37': 'NC', '36': 'NY', '35': 'NM', '34': 'NJ', '33': 'NH', '55': 'WI',
+    '74': 'UM', '32': 'NV', '44': 'RI'
+  };
+
   map.on('mousemove', 'districts', function(e) {
     // Single out the first found feature.
     var feature = e.features[0];
@@ -370,7 +383,7 @@
 
     // Display a popup with the name of the district
     popup.setLngLat(e.lngLat)
-      .setText(feature.properties.NAMELSAD)
+      .setText(state_abvs[feature.properties.STATEFP] + '-' + feature.properties.CD115FP)
       .addTo(map);
   });
 
