@@ -128,7 +128,7 @@ def main():
     driver.close()
 
     print('dumping crawl_output')
-    print('{} articles crawled'.format())
+    print('{} articles crawled'.format(len(crawl_output.keys())))
     pickle.dump(crawl_output, open('crawl_output.p', 'wb'))
 
 
