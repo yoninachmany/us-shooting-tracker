@@ -31,7 +31,7 @@ def daterange(start_date, end_date):
 
 
 if len(sys.argv) < 3:
-    sys.stderr.write("Usage: python compile_google_news_links_selenium-SHOOTINGS.py startYear-startMonth-startDay endYear-endMonth-endDay\n")
+    print("Usage: python compile_google_news_links_selenium-SHOOTINGS.py startYear-startMonth-startDay endYear-endMonth-endDay\n")
     exit(0)
 
 sdate = sys.argv[1]
@@ -43,9 +43,10 @@ end_date = date(int(ey), int(em), int(ed))
 
 
 
-search_terms = ["shooting", "man shot", "woman shot", "child shot", "officer-involved shooting"]
+search_terms = [ "man shot", "woman shot", "officer-involved shooting"]
+blacklist = ['https://www.youtube.com/?gl=US', 'https://www.blogger.com/?tab=nj']
 
-sys.stderr.write("Search from %s to %s for terms %s\n"%(start_date, end_date, str(search_terms)))
+print("Search from %s to %s for terms %s\n"%(start_date, end_date, str(search_terms)))
 
 def main():
     first_run = True
@@ -70,21 +71,21 @@ def main():
               'tbm' : 'nws',
               'start' : '0' }
 
-            sys.stderr.write("***" + url + urllib.parse.urlencode(values)+'\n')
+            print("***" + url + urllib.parse.urlencode(values))
             driver.get(url + urllib.parse.urlencode(values))
             if first_run:
-                sys.stderr.write("Set search preferences by going to Settings > Search Settings, and selecting 'Never show instant results', and then set the Results per page to 100")
-                sleep(10)
+                print("Set search preferences by going to Settings > Search Settings, and selecting 'Never show instant results', and then set the Results per page to ***40***")
+                sleep(60)
                 first_run = False
             for i,a in enumerate(driver.find_elements_by_tag_name('a')):
                 try:
                     link = a.get_attribute('href')
-                    while (link is not None) and (link.startswith('https://ipv4.google.com/sorry/')): #captchas
-                        sys.stderr.write("Blocked on: %s\n"%(str(link)))
+                    while link is not None and link.startswith('https://ipv4.google.com/sorry/'): #captchas
+                        print("Blocked on: %s\n"%(str(link)))
                         sleep(10)
                         link = a.get_attribute('href')
 
-                    if (link is not None) and (link not in crawl_output.keys()) and (validators.url(link)):
+                    if link is not None and link not in crawl_output.keys() and validators.url(link) and link not in blacklist:
                         if "google.com" not in link and "webcache.googleusercontent" not in link: #remove some obvious ads and junk <a> elements
                             print(single_date)
                             print(single_date.strftime("%Y-%m-%d"), "\t", term, "\t", end=' ')
@@ -122,11 +123,12 @@ def main():
 
 
                 except StaleElementReferenceException:
-                    sys.stderr.write("Stale element: %s\n"%str(a))
+                    print("Stale element: %s\n"%str(a))
 
     driver.close()
 
     print('dumping crawl_output')
+    print('{} articles crawled'.format())
     pickle.dump(crawl_output, open('crawl_output.p', 'wb'))
 
 
