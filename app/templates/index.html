@@ -6,6 +6,7 @@
   <meta charset='utf-8' />
   <title>Mapping Gun Violence</title>
   <link rel='icon' href="/static/favicon.ico"/>
+  <link rel="stylesheet" type="text/css" href="static/index.css">
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
   <script src='https://api.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js'></script>
   <link href='https://api.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
@@ -70,6 +71,21 @@
   .mapboxgl-popup {
     max-width: 400px;
     font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  }
+  .spider-leg-container.spider-leg-pin{
+    position: relative;
+    width: 22px;
+    height: 22px;
+    margin-left: -8px;
+    margin-top: -18px;
+    background-image: url(https://api.mapbox.com/styles/v1/mapbox/dark-v9/sprite.png?access_token=pk.eyJ1Ijoic29jcmF0YSIsImEiOiJjaXJxc2wzam0waGU5ZmZtODhqd2ttamdxIn0.1ZQEByXoDD7fGIa9lUHIqg);
+    background-position: -110px -110px;
+  }
+  .spider-leg-container.spider-leg-line {
+    background-color: #f4f4f4;
+  }
+  .spider-leg-container:hover.spider-leg-line {
+    background-color: #f404f4;
   }
   </style>
 </head>
@@ -170,6 +186,7 @@
     </div>
   </div>
   <script src='//d3js.org/d3.v3.min.js' charset='utf-8'></script>
+  <script type="text/javascript" src="/static/index.js"></script>
   <script>
   mapboxgl.accessToken = 'pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2lqbmpqazdlMDBsdnRva284cWd3bm11byJ9.V6Hg2oYJwMAxeoR9GEzkAA';
   var map = new mapboxgl.Map({
@@ -178,6 +195,11 @@
     center: [-107.7938316, 38.9764531],
     zoom: 3.5
   });
+  //spidifier added
+  var  spiderifier = new MapboxglSpiderifier(map, {
+      customPin: true
+  });
+  var SPIDERFY_FROM_ZOOM = 10;
 
   // Add zoom and rotation controls to the map.
   map.addControl(new mapboxgl.NavigationControl());
@@ -286,12 +308,12 @@
         type: 'circle',
         source: 'shootings',
         filter: ['!has', 'point_count'],
-        paint: {
-          'circle-color': '#11b4da',
-          'circle-radius': 4,
-          'circle-stroke-width': 1,
-          'circle-stroke-color': '#fff'
-        }
+        // paint: {
+        //   'circle-color': '#11b4da',
+        //   'circle-radius': 4,
+        //   'circle-stroke-width': 1,
+        //   'circle-stroke-color': '#fff'
+        // }
       });
 
       // update year filter when the year slider is dragged
@@ -340,7 +362,7 @@
   // When a click event occurs on a feature in the unclustered-point layer, open a popup at the
   // location of the feature, with description HTML from its properties.
   map.on('click', 'unclustered-point', function (e) {
-    map.flyTo({center: e.features[0].geometry.coordinates});
+    // map.flyTo({center: e.features[0].geometry.coordinates});
 
     var coordinates = e.features[0].geometry.coordinates.slice();
     var articleUrl = e.features[0].properties.articleUrl;
@@ -353,6 +375,19 @@
       coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
     }
 
+    spiderifier.unspiderfy();
+    if (map.getZoom() < SPIDERFY_FROM_ZOOM) {
+      map.flyTo({center: e.features[0].geometry.coordinates});
+    } else {
+      map.getSource('shootings').getClusterChildren(e.features[0].properties.cluster_id, Math.floor(map.getZoom()), true, function(data){
+        var markers = _.map(data.children, function(child){
+          return child.properties;
+        });
+        spiderifier.spiderfy(e.features[0].geometry.coordinates, markers);
+      });
+    }
+
+    //TODO: set other properties to be visible in the popup somehow?
     new mapboxgl.Popup()
       .setLngLat(coordinates)
       .setHTML(`<a href=${articleUrl} target="_blank">${articleTitle}</a>`)

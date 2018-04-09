@@ -1,0 +1,27 @@
+{
+  "name": "mapboxgl-spiderifier",
+  "version": "1.0.9",
+  "description": "Spiderify markers on mapbox-gl using marker overlays.",
+  "main": "index.js",
+  "style": "index.css",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mimio/mapboxgl-spiderifier.git"
+  },
+  "keywords": [
+    "mapboxgl",
+    "spiderfy"
+  ],
+  "author": "bewithjonam",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mimio/mapboxgl-spiderifier/issues"
+  },
+  "homepage": "https://github.com/mimio/mapboxgl-spiderifier#readme"
+}
