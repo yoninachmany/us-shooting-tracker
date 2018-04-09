@@ -497,9 +497,6 @@
 
       year = 2015;
       map.getSource('shootings').setData(filterBy(savedData, year, month, circumstances));
-
-      // update text in the UI
-      document.getElementById('active-year').innerText = year;
     } else {
       monthFilter.style.display = "none";
       monthCheckBox.checked = false;
