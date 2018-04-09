@@ -210,9 +210,22 @@
       source: 'districts',
       'source-layer': 'tl_2017_us_cd115-ahrk3y',
       paint: {
-          'fill-outline-color': 'rgba(0,0,0,0.5)',
-          'fill-color': 'rgba(0,0,0,0.1)'
+        'fill-outline-color': 'rgba(0,0,0,0.5)',
+        'fill-color': 'rgba(0,0,0,0.1)'
       }
+    });
+
+    map.addLayer({
+      id: 'districts-highlighted',
+      type: 'fill',
+      source: 'districts',
+      'source-layer': 'tl_2017_us_cd115-ahrk3y',
+      paint: {
+        'fill-outline-color': '#484896',
+        'fill-color': '#6e599f',
+        'fill-opacity': 0.75
+      },
+      filter: ['in', 'GEOID', '']
     });
 
     d3.json('/static/final-output.geojson', function(err, data) {
@@ -343,6 +356,27 @@
       });
     });
   });
+
+  var popup = new mapboxgl.Popup({
+    closeButton: false
+  });
+
+  map.on('mousemove', 'districts', function(e) {
+    // Single out the first found feature.
+    var feature = e.features[0];
+
+    // Add the feature with the district id to the highlighted layer.
+    map.setFilter('districts-highlighted', ['in', 'GEOID', feature.properties.GEOID]);
+
+    // Display a popup with the name of the district
+    popup.setLngLat(e.lngLat)
+      .setText(feature.properties.NAMELSAD)
+      .addTo(map);
+  });
+
+  map.on('mouseleave', 'counties', function() {
+    popup.remove();
+    map.setFilter('districts-highlighted', ['in', 'GEOID', '']);
 
   // When a click event occurs on a feature in the clusters layer, zoom in.
   map.on('click', 'clusters', function (e) {
