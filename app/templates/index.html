@@ -377,6 +377,19 @@
   map.on('mouseleave', 'counties', function() {
     popup.remove();
     map.setFilter('districts-highlighted', ['in', 'GEOID', '']);
+
+  // When a click event occurs on a feature in the clusters layer, zoom in.
+  map.on('click', 'clusters', function (e) {
+    map.flyTo({center: e.features[0].geometry.coordinates, zoom: map.getZoom() + 1});
+
+    var coordinates = e.features[0].geometry.coordinates.slice();
+
+    // Ensure that if the map is zoomed out such that multiple
+    // copies of the feature are visible, the popup appears
+    // over the copy being pointed to.
+    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+    }
   });
 
   // When a click event occurs on a feature in the unclustered-point layer, open a popup at the
@@ -399,6 +412,16 @@
       .setLngLat(coordinates)
       .setHTML(`<a href=${articleUrl} target="_blank">${articleTitle}</a>`)
       .addTo(map);
+  });
+
+  // Change the cursor to a pointer when the mouse is over the clusters layer.
+  map.on('mouseenter', 'clusters', function () {
+    map.getCanvas().style.cursor = 'pointer';
+  });
+
+  // Change it back to a pointer when it leaves.
+  map.on('mouseleave', 'clusters', function () {
+    map.getCanvas().style.cursor = '';
   });
 
   // Change the cursor to a pointer when the mouse is over the unclustered-point layer.
