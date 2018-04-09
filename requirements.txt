@@ -10,3 +10,7 @@ six==1.11.0
 Werkzeug==0.14.1
 gunicorn==19.7.1
 geojson==2.3.0
+lxml==4.2.1
+selenium==3.11.0
+newspaper3k==0.2.6
+validators==0.12.1

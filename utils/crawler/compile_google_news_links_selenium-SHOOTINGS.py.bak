@@ -1,0 +1,116 @@
+import sys
+import urllib.request, urllib.error, urllib.parse
+import urllib.request, urllib.parse, urllib.error
+from http.cookiejar import CookieJar
+import lxml.etree
+import lxml.html
+import re
+from datetime import timedelta, date
+from selenium import webdriver
+from selenium.common.exceptions import StaleElementReferenceException
+from time import sleep
+import random
+
+from newspaper import Article
+
+"""
+This script was written to search Google news for a list of search terms over a
+specified range of dates.  The idea here is to replicate the methodology used by
+Jennifer Mascia to put together the The Gun Report, which was a New York Times blog
+that chronicled daily shootings across the country.  The methodology is described
+in an On the Media interview:  http://www.onthemedia.org/story/end-gun-report/
+"""
+
+
+def daterange(start_date, end_date):
+  for n in range(int ((end_date - start_date).days)):
+    yield end_date - timedelta(n)
+
+
+if len(sys.argv) < 3:
+  sys.stderr.write("Usage: python compile_google_news_links_selenium.py startYear-startMonth-startDay endYear-endMonth-endDay\n")
+  exit(0)
+
+sdate = sys.argv[1]
+edate = sys.argv[2]
+sy, sm, sd = sdate.split('-')
+ey, em, ed = edate.split('-')
+start_date = date(int(sy), int(sm), int(sd))
+end_date = date(int(ey), int(em), int(ed))
+
+
+
+search_terms = ["shooting", "man shot", "woman shot", "child shot", "officer-involved shooting"]
+
+sys.stderr.write("Search from %s to %s for terms %s\n"%(start_date, end_date, str(search_terms)))
+
+def main():
+  first_run = True
+  driver = webdriver.Chrome('./chromedriver')
+  crawl_output = {} # url -> dict representing article
+
+  if os.path.exists('crawl_output.p'):
+    crawl_output = pickle.load(open('crawl_output.p', 'rb'))
+
+  i = 0
+
+  # Iterate through dates
+  for single_date in daterange(start_date, end_date):
+    for term in search_terms:
+      url = 'https://www.google.com/search?'
+      values = {'q' : term,
+        'hl' : 'en',
+        'gl' : 'us',
+        'authuser' : '0',
+        'source' : 'lnt',
+        'tbs' : 'cdr:1,cd_min:' + single_date.strftime("%m/%d/%Y") + ",cd_max:" + single_date.strftime("%m/%d/%Y"),
+        'tbm' : 'nws',
+        'start' : '0' }
+
+      sys.stderr.write("***" + url + urllib.parse.urlencode(values)+'\n')
+      driver.get(url + urllib.parse.urlencode(values))
+      if first_run:
+          sys.stderr.write("Set search preferences by going to Settings > Search Settings, and selecting 'Never show instant results', and then set the Results per page to 100")
+          sleep(100)
+          first_run = False
+      for i,a in enumerate(driver.find_elements_by_tag_name('a')):
+        try:
+          link = a.get_attribute('href')
+          while (link is not None) and (link.startswith('https://ipv4.google.com/sorry/')): #captchas
+              sys.stderr.write("Blocked on: %s\n"%(str(link)))
+              sleep(10)
+              link = a.get_attribute('href')
+          if (link is not None) and (link not in crawl_output.keys()):
+            if "google.com" not in link and "webcache.googleusercontent" not in link: #remove some obvious ads and junk <a> elements
+                  print(single_date)
+                  print(single_date.strftime("%Y-%m-%d"), "\t", term, "\t", end=' ')
+                  print(link)
+
+                  article = Article(link)
+                  article.download()
+                  article.parse()
+
+                  article_dict = {
+                    'publication data': str(article.publish_date),
+                    'text': str(article.text),
+                    'title': str(article.title),
+                  }
+
+                  crawl_output[link] = article_dict
+
+                  i += 1
+                  if i % 10 == 0:
+                    # every 10 articles, dump the output
+                    print('dumping crawl_output')
+                    print(crawl_output)
+                    pickle.dump(crawl_output, open('crawl_output.p', 'wb'))
+
+    except StaleElementReferenceException:
+	    sys.stderr.write("Stale element: %s\n"%str(a))
+    driver.close()
+
+  pickle.dump(crawl_output, open('crawl_output.p', 'wb'))
+
+
+if __name__ == "__main__":
+    main()

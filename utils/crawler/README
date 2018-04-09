@@ -1,0 +1,11 @@
+# Install requirements
+
+$ pip install -r requirements.txt
+
+# Run python compile_google_news_links_selenium.py startYear-startMonth-startDay endYear-endMonth-endDay
+
+$ python compile_google_news_links_selenium-SHOOTINGS.py 2008-03-29 2018-04-01
+
+# Do initial CAPTCHA
+
+# When the output changes, you might need to do lots of little captcha checkboxes
