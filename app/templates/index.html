@@ -208,6 +208,19 @@
       }
     });
 
+    map.addLayer({
+      id: 'districts-highlighted',
+      type: 'fill',
+      source: 'districts',
+      'source-layer': 'tl_2017_us_cd115-ahrk3y',
+      paint: {
+        'fill-outline-color': '#484896',
+        'fill-color': '#6e599f',
+        'fill-opacity': 0.75
+      },
+      filter: ['in', 'LSAD', '']
+    });
+
     d3.json('/static/shootings2500.geojson', function(err, data) {
       savedData = data;
 
