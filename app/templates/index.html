@@ -377,6 +377,7 @@
   map.on('mouseleave', 'counties', function() {
     popup.remove();
     map.setFilter('districts-highlighted', ['in', 'GEOID', '']);
+  });
 
   // When a click event occurs on a feature in the clusters layer, zoom in.
   map.on('click', 'clusters', function (e) {
