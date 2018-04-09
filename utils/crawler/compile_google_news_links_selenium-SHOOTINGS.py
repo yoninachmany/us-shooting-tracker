@@ -26,7 +26,7 @@ in an On the Media interview:  http://www.onthemedia.org/story/end-gun-report/
 
 
 def daterange(start_date, end_date):
-    for n in range(int ((end_date - start_date).days)):
+    for n in range(int ((end_date - start_date).days) + 1):
         yield end_date - timedelta(n)
 
 
