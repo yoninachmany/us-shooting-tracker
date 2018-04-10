@@ -416,8 +416,6 @@
     map.flyTo({center: e.features[0].geometry.coordinates});
 
     var coordinates = e.features[0].geometry.coordinates.slice();
-    // var articleUrl = e.features[0].properties.articleUrl;
-    // var articleTitle = e.features[0].properties.articleTitle;
 
     var articlesInfo = "<ol>";
 
@@ -502,7 +500,6 @@
 
     new mapboxgl.Popup()
       .setLngLat(coordinates)
-      .setHTML(`<a href=${articleUrl} target="_blank">${articleTitle}</a>`)
       .setHTML(articlesInfo)
       .addTo(map);
   });
