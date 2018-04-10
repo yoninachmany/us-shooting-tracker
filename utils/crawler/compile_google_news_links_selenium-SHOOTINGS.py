@@ -117,8 +117,9 @@ def main():
                                     print('dumping crawl_output')
                                     pickle.dump(crawl_output, open('crawl_output.p', 'wb'))
 
-                            except ArticleException:
-                                # invalid article
+                            except (ArticleException, ValueError):
+                                # invalid article (either bad url or contains
+                                # illegal characters)
                                 continue
 
 
