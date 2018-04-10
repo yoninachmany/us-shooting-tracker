@@ -394,7 +394,7 @@
 
   // When a click event occurs on a feature in the clusters layer, zoom in.
   map.on('click', 'clusters', function (e) {
-    map.flyTo({center: e.features[0].geometry.coordinates, zoom: map.getZoom() + 1});
+    map.flyTo({center: e.features[0].geometry.coordinates, zoom: map.getZoom() + 3.5});
 
     var coordinates = e.features[0].geometry.coordinates.slice();
 
