@@ -104,6 +104,7 @@ def main():
                                     continue
 
                                 article_dict = {
+                                    # I know 'data' is a typo, but it's too late now...
                                     'publication data': str(pub_date),
                                     'text': str(text),
                                     'title': str(title),
@@ -117,8 +118,9 @@ def main():
                                     print('dumping crawl_output')
                                     pickle.dump(crawl_output, open('crawl_output.p', 'wb'))
 
-                            except ArticleException:
-                                # invalid article
+                            except (ArticleException, ValueError):
+                                # invalid article (either bad url or contains
+                                # illegal characters)
                                 continue
 
 
