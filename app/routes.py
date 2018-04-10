@@ -1,4 +1,4 @@
-from flask import render_template, Response
+from flask import render_template, Response, make_response
 from app import app
 
 import os
@@ -10,7 +10,9 @@ import csv
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html')
+    response = make_response(render_template('index.html'))
+    response.cache_control.max_age = 0 # do not cache this page!
+    return response
 
 
 @app.route('/download')
