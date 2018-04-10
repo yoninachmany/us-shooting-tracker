@@ -71,7 +71,11 @@
 
   .mapboxgl-popup {
     max-width: 400px;
+    max-height: 500px;
     font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  }
+  .mapboxgl-popup-content {
+    overflow: auto !important;
   }
   </style>
 </head>
@@ -412,8 +416,82 @@
     map.flyTo({center: e.features[0].geometry.coordinates});
 
     var coordinates = e.features[0].geometry.coordinates.slice();
-    var articleUrl = e.features[0].properties.articleUrl;
-    var articleTitle = e.features[0].properties.articleTitle;
+    // var articleUrl = e.features[0].properties.articleUrl;
+    // var articleTitle = e.features[0].properties.articleTitle;
+
+    var articlesInfo = "<ol>";
+
+    for (i = 0; i < e.features.length; i++) {
+      var articleUrl = e.features[i].properties.articleUrl;
+      var articleTitle = e.features[i].properties.articleTitle;
+      articlesInfo = articlesInfo.concat("<li><a href=", articleUrl, " target=\"_blank\">", articleTitle, "</a>");
+
+      var incidentInfo = "<br>"
+      console.log(incidentInfo.length);
+
+      var props = e.features[i].properties;
+      if (props.knewEachOther === "Yes") {
+        incidentInfo = incidentInfo.concat("Knew each other, ");
+      }
+
+      if (props.domesticViolence==="Yes") {
+        incidentInfo = incidentInfo.concat("Domestic violence, ");
+      }
+
+      if (props.anotherCrime==="Yes") {
+        incidentInfo = incidentInfo.concat(" During another crime, ");
+      }
+
+      if (props.selfDefense==="Yes") {
+        incidentInfo = incidentInfo.concat("In self-defense, ");
+      }
+
+      if (props.alcohol==="Yes") {
+        incidentInfo = incidentInfo.concat("Alcohol involved, ");
+      }
+
+      if (props.drugs==="Yes") {
+        incidentInfo = incidentInfo.concat("Drugs involved, ");
+      }
+
+      if (props.selfDirected==="Yes") {
+        incidentInfo = incidentInfo.concat("Self-directed, ");
+      }
+
+      if (props.suicideOrAttempt==="Yes") {
+        incidentInfo = incidentInfo.concat("Suicide or attempt, ");
+      }
+
+      if (props.unintentional==="Yes") {
+        incidentInfo = incidentInfo.concat("Unintentional, ");
+      }
+
+      if (props.byOfficer==="Yes") {
+        incidentInfo = incidentInfo.concat("By police officer, ");
+      }
+
+      if (props.atOfficer==="Yes") {
+        incidentInfo = incidentInfo.concat("At police officer, ");
+      }
+
+      if (props.stolen=="Yes") {
+        incidentInfo = incidentInfo.concat("By stolen gun, ");
+      }
+
+      if (familyOwned.stolen==="Yes") {
+        incidentInfo = incidentInfo.concat("By family-owned gun, ");
+      }
+
+      console.log(incidentInfo.length);
+
+      if (incidentInfo.length > 4) {
+        articlesInfo = articlesInfo.concat(incidentInfo);
+        articlesInfo = articlesInfo.slice(0, -2);
+      }
+
+    }
+    articlesInfo = articlesInfo.concat("</li></ol>")
+    console.log(articlesInfo);
 
     // Ensure that if the map is zoomed out such that multiple
     // copies of the feature are visible, the popup appears
@@ -425,6 +503,7 @@
     new mapboxgl.Popup()
       .setLngLat(coordinates)
       .setHTML(`<a href=${articleUrl} target="_blank">${articleTitle}</a>`)
+      .setHTML(articlesInfo)
       .addTo(map);
   });
 
