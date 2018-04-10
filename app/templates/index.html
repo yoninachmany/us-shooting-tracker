@@ -71,7 +71,11 @@
 
   .mapboxgl-popup {
     max-width: 400px;
+    max-height: 500px;
     font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  }
+  .mapboxgl-popup-content {
+    overflow: auto !important;
   }
   </style>
 </head>
@@ -412,8 +416,72 @@
     map.flyTo({center: e.features[0].geometry.coordinates});
 
     var coordinates = e.features[0].geometry.coordinates.slice();
-    var articleUrl = e.features[0].properties.articleUrl;
-    var articleTitle = e.features[0].properties.articleTitle;
+    // var articleUrl = e.features[0].properties.articleUrl;
+    // var articleTitle = e.features[0].properties.articleTitle;
+
+    var articlesInfo = "<ol>";
+
+    for (i = 0; i < e.features.length; i++) {
+      var articleUrl = e.features[i].properties.articleUrl;
+      var articleTitle = e.features[i].properties.articleTitle;
+      articlesInfo = articlesInfo.concat("<li><a href=", articleUrl, " target=\"_blank\">", articleTitle, "</a>");
+
+      var props = e.features[i].properties;
+      if (props.knewEachOther === "Yes") {
+        articlesInfo = articlesInfo.concat(" Knew each other,")
+      }
+
+      if (props.domesticViolence==="Yes") {
+        articlesInfo = articlesInfo.concat(" Domestic Violence,")
+      }
+
+      if (props.anotherCrime==="Yes") {
+        articlesInfo = articlesInfo.concat(" Another crime,")
+      }
+
+      if (props.selfDefense==="Yes") {
+        articlesInfo = articlesInfo.concat(" Self-Defense,")
+      }
+
+      if (props.alcohol==="Yes") {
+        articlesInfo = articlesInfo.concat(" Alcohol involved,")
+      }
+
+      if (props.drugs==="Yes") {
+        articlesInfo = articlesInfo.concat(" Drugs involved,")
+      }
+
+      if (props.selfDirected==="Yes") {
+        articlesInfo = articlesInfo.concat(" Self-directed,")
+      }
+
+      if (props.suicideOrAttempt==="Yes") {
+        articlesInfo = articlesInfo.concat(" Suicide or attempt,")
+      }
+
+      if (props.unintentional==="Yes") {
+        articlesInfo = articlesInfo.concat(" Unintentional,")
+      }
+
+      if (props.byOfficer==="Yes") {
+        articlesInfo = articlesInfo.concat(" By officer,")
+      }
+
+      if (props.atOfficer==="Yes") {
+        articlesInfo = articlesInfo.concat(" At officer,")
+      }
+
+      if (props.stolen=="Yes") {
+        articlesInfo = articlesInfo.concat(" Stolen Gun,")
+      }
+
+      if (familyOwned.stolen==="Yes") {
+        articlesInfo = articlesInfo.concat(" Family-owned gun,")
+      }
+
+    }
+    articlesInfo = articlesInfo.concat("</li></ol>")
+    console.log(articlesInfo);
 
     // Ensure that if the map is zoomed out such that multiple
     // copies of the feature are visible, the popup appears
@@ -425,6 +493,7 @@
     new mapboxgl.Popup()
       .setLngLat(coordinates)
       .setHTML(`<a href=${articleUrl} target="_blank">${articleTitle}</a>`)
+      .setHTML(articlesInfo)
       .addTo(map);
   });
 
