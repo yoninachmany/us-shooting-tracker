@@ -312,7 +312,7 @@
         filter: ['!has', 'point_count'],
         paint: {
           'circle-color': '#11b4da',
-          'circle-radius': 4,
+          'circle-radius': 8,
           'circle-stroke-width': 1,
           'circle-stroke-color': '#fff'
         }
@@ -398,7 +398,7 @@
 
   // When a click event occurs on a feature in the clusters layer, zoom in.
   map.on('click', 'clusters', function (e) {
-    map.flyTo({center: e.features[0].geometry.coordinates, zoom: map.getZoom() + 1});
+    map.flyTo({center: e.features[0].geometry.coordinates, zoom: map.getZoom() + 4});
 
     var coordinates = e.features[0].geometry.coordinates.slice();
 
