@@ -426,57 +426,67 @@
       var articleTitle = e.features[i].properties.articleTitle;
       articlesInfo = articlesInfo.concat("<li><a href=", articleUrl, " target=\"_blank\">", articleTitle, "</a>");
 
+      var incidentInfo = "<br>"
+      console.log(incidentInfo.length);
+
       var props = e.features[i].properties;
       if (props.knewEachOther === "Yes") {
-        articlesInfo = articlesInfo.concat(" Knew each other,")
+        incidentInfo = incidentInfo.concat("Knew each other, ");
       }
 
       if (props.domesticViolence==="Yes") {
-        articlesInfo = articlesInfo.concat(" Domestic Violence,")
+        incidentInfo = incidentInfo.concat("Domestic violence, ");
       }
 
       if (props.anotherCrime==="Yes") {
-        articlesInfo = articlesInfo.concat(" Another crime,")
+        incidentInfo = incidentInfo.concat(" During another crime, ");
       }
 
       if (props.selfDefense==="Yes") {
-        articlesInfo = articlesInfo.concat(" Self-Defense,")
+        incidentInfo = incidentInfo.concat("In self-defense, ");
       }
 
       if (props.alcohol==="Yes") {
-        articlesInfo = articlesInfo.concat(" Alcohol involved,")
+        incidentInfo = incidentInfo.concat("Alcohol involved, ");
       }
 
       if (props.drugs==="Yes") {
-        articlesInfo = articlesInfo.concat(" Drugs involved,")
+        incidentInfo = incidentInfo.concat("Drugs involved, ");
       }
 
       if (props.selfDirected==="Yes") {
-        articlesInfo = articlesInfo.concat(" Self-directed,")
+        incidentInfo = incidentInfo.concat("Self-directed, ");
       }
 
       if (props.suicideOrAttempt==="Yes") {
-        articlesInfo = articlesInfo.concat(" Suicide or attempt,")
+        incidentInfo = incidentInfo.concat("Suicide or attempt, ");
       }
 
       if (props.unintentional==="Yes") {
-        articlesInfo = articlesInfo.concat(" Unintentional,")
+        incidentInfo = incidentInfo.concat("Unintentional, ");
       }
 
       if (props.byOfficer==="Yes") {
-        articlesInfo = articlesInfo.concat(" By officer,")
+        incidentInfo = incidentInfo.concat("By police officer, ");
       }
 
       if (props.atOfficer==="Yes") {
-        articlesInfo = articlesInfo.concat(" At officer,")
+        incidentInfo = incidentInfo.concat("At police officer, ");
       }
 
       if (props.stolen=="Yes") {
-        articlesInfo = articlesInfo.concat(" Stolen Gun,")
+        incidentInfo = incidentInfo.concat("By stolen gun, ");
       }
 
       if (familyOwned.stolen==="Yes") {
-        articlesInfo = articlesInfo.concat(" Family-owned gun,")
+        incidentInfo = incidentInfo.concat("By family-owned gun, ");
+      }
+
+      console.log(incidentInfo.length);
+
+      if (incidentInfo.length > 4) {
+        articlesInfo = articlesInfo.concat(incidentInfo);
+        articlesInfo = articlesInfo.slice(0, -2);
       }
 
     }
