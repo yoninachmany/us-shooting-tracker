@@ -14,6 +14,11 @@ def index():
     response.cache_control.max_age = 0 # do not cache this page!
     return response
 
+@app.route('/about')
+def about():
+    response = make_response(render_template('about.html'))
+    response.cache_control.max_age = 0 # do not cache this page!
+    return response
 
 @app.route('/download')
 def download():
