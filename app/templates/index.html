@@ -428,55 +428,55 @@
       console.log(incidentInfo.length);
 
       var props = e.features[i].properties;
-      if (props.knewEachOther === "Yes") {
+      if (props.knewEachOther === 1) {
         incidentInfo = incidentInfo.concat("Knew each other, ");
       }
 
-      if (props.domesticViolence==="Yes") {
+      if (props.domesticViolence===1) {
         incidentInfo = incidentInfo.concat("Domestic violence, ");
       }
 
-      if (props.anotherCrime==="Yes") {
+      if (props.anotherCrime===1) {
         incidentInfo = incidentInfo.concat(" During another crime, ");
       }
 
-      if (props.selfDefense==="Yes") {
+      if (props.selfDefense===1) {
         incidentInfo = incidentInfo.concat("In self-defense, ");
       }
 
-      if (props.alcohol==="Yes") {
+      if (props.alcohol===1) {
         incidentInfo = incidentInfo.concat("Alcohol involved, ");
       }
 
-      if (props.drugs==="Yes") {
+      if (props.drugs===1) {
         incidentInfo = incidentInfo.concat("Drugs involved, ");
       }
 
-      if (props.selfDirected==="Yes") {
+      if (props.selfDirected===1) {
         incidentInfo = incidentInfo.concat("Self-directed, ");
       }
 
-      if (props.suicideOrAttempt==="Yes") {
+      if (props.suicideOrAttempt===1) {
         incidentInfo = incidentInfo.concat("Suicide or attempt, ");
       }
 
-      if (props.unintentional==="Yes") {
+      if (props.unintentional===1) {
         incidentInfo = incidentInfo.concat("Unintentional, ");
       }
 
-      if (props.byOfficer==="Yes") {
+      if (props.byOfficer===1) {
         incidentInfo = incidentInfo.concat("By police officer, ");
       }
 
-      if (props.atOfficer==="Yes") {
+      if (props.atOfficer===1) {
         incidentInfo = incidentInfo.concat("At police officer, ");
       }
 
-      if (props.stolen=="Yes") {
+      if (props.stolen==1) {
         incidentInfo = incidentInfo.concat("By stolen gun, ");
       }
 
-      if (familyOwned.stolen==="Yes") {
+      if (familyOwned.stolen===1) {
         incidentInfo = incidentInfo.concat("By family-owned gun, ");
       }
 
