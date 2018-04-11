@@ -114,8 +114,8 @@
       </h2>
     </div>
     <div id='year-session' class='session' style='display:none'>
-      <h2>Year: <label id='active-year'>2015</label></h2>
-      <input id='year-slider' class='row' type='range' min='2015' max='2018' step='1' value='2015' />
+      <h2>Year: <label id='active-year'>2018</label></h2>
+      <input id='year-slider' class='row' type='range' min='2015' max='2018' step='1' value='2018' />
     </div>
     <div id='month-session' class='session' style='display:none'>
       <h2>Month: <label id='active-month'>January</label></h2>
@@ -571,7 +571,7 @@
       monthFilter.style.display = "block";
       yearSession.style.display = "block";
 
-      year = 2015;
+      year = 2018;
       map.getSource('shootings').setData(filterBy(savedData, year, month, circumstances));
     } else {
       monthFilter.style.display = "none";
