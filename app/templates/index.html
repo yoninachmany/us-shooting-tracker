@@ -548,7 +548,7 @@
     if (circumstances != null) {
       features = features.filter(feature => {
         for (var i = 0; i < circumstances.length; i++) {
-          if (feature.properties[circumstances[i]] !== "Yes") {
+          if (feature.properties[circumstances[i]] !== "Yes" && feature.properties[circumstances[i]] !== 1) {
             return false;
           }
         }
