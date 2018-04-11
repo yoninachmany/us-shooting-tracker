@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset='utf-8' />
+  <title>Mapping Gun Violence</title>
+  <link rel='icon' href="/static/favicon.ico"/>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <script src='https://api.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js'></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
+  <style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, Sans-serif;
+  }
+
+  #map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 20px;
+    line-height: 30px;
+  }
+
+  h2 {
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 10px;
+  }
+
+  a {
+    text-decoration: none;
+    color: #FFB700;
+  }
+
+  #console {
+    position: absolute;
+    margin: 10px;
+    width: 360px;
+    background-color: white;
+    padding: 10px 20px;
+    overflow: auto;
+    max-height: 95vh;
+  }
+
+  .session {
+    margin-bottom: 20px;
+  }
+
+  .row {
+    height: 12px;
+    width: 100%;
+  }
+
+  .colors {
+    background: linear-gradient(to right, #FFEDA0, #FED976, #FEB24C, #FD8D3C, #FC4E2A, #E31A1C, #BD0026, #800026);
+    margin-bottom: 5px;
+  }
+
+  .label {
+    width: 11%;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .mapboxgl-popup {
+    max-width: 400px;
+    max-height: 500px;
+    font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  }
+  .mapboxgl-popup-content {
+    overflow: auto !important;
+  }
+  </style>
+</head>
+
+<body>
+  <div id='map'></div>
+  <div id='console'>
+    <h1>Mapping Gun Violence</h1>
+      <p>The Mapping Gun Violence project is an attempt to create a public data source
+      and visualization tool for gun violence incidents in the United States. Our aim
+      is to empower advocates, journalists, and concerned citizens to build data-centric
+      arguments about gun violence in the US.</p>
+      <p>The incident data comes from publicly-available news reports. We extract
+        the following information using machine learning classifiers:</p>
+        <ul>
+          <li>City of shooting</li>
+          <li>State of shooting</li>
+          <li>Date of shooting</li>
+          <li>Did the shooter and victim know each other?</li>
+          <li>Was this an alleged incident of domestic violence?</li>
+          <li>Was this an alleged incident of self-defense?</li>
+          <li>Did the shooting allegedly occur during another crime?</li>
+          <li>Were substances (such as alcohol or other drugs) allegedly involved?</li>
+          <li>Was this an unintentional or self-directed shooting?</li>
+          <li>Was this a potential suicide?</li>
+          <li>Was this shooting allegedly at a police officer or by a police officer?</li>
+          <li>Was the firearm allegedly stolen?</li>
+          <li>Did the firearm belong to the victim or the victim’s family?</li>
+        </ul>
+        <p>The accuracy of our classifiers on manually-labeled test data is:
+        State: 94.9%, City: 68.7%, Week: 86.1%, Questions: 85.79% and higher</p>
+        <p>Using machine learning allows us to automatically extract the above
+          information, without manual extraction by human workers. However, that
+          means that all of the information on this site is predicted and therefore
+          not 100% accurate, and every data point is open to error - either from our
+          predictions or from the information given in the articles themselves. All
+          incident information is alleged.</p>
+          <p>Any burden of verification of the data on this site is on the site’s
+            users. All incidents are linked to the original news source (when the
+            link is available). If you find an error on this site, please submit
+            it here and it will be removed.</p>
+    <div class='session'>
+      <p><a href="{{ url_for('download') }}">Download</a> raw data.
+      Return to the <a href="{{ url_for('index') }}">map</a>.</p>
+    </div>
+
+
+
+  </div>
+  <script src='//d3js.org/d3.v3.min.js' charset='utf-8'></script>
+  <script>
+  mapboxgl.accessToken = 'pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2lqbmpqazdlMDBsdnRva284cWd3bm11byJ9.V6Hg2oYJwMAxeoR9GEzkAA';
+  var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/light-v9',
+    center: [-107.7938316, 38.9764531],
+    zoom: 3.5
+  });
+
+  // Add zoom and rotation controls to the map.
+  map.addControl(new mapboxgl.NavigationControl());
+
+  var data;
+
+  var year;
+  var month;
+  var circumstances;
+
+  map.on('load', function() {
+    // Add the source to query. In this example we're using
+    // congressional district polygons uploaded as vector tiles
+    // Source: ftp://ftp2.census.gov/geo/tiger/TIGER2017/CD/
+    map.addSource('districts', {
+      type: 'vector',
+      url: 'mapbox://yoninachmany.cxcgq8gk'
+    });
+
+    map.addLayer({
+      id: 'districts',
+      type: 'fill',
+      source: 'districts',
+      'source-layer': 'tl_2017_us_cd115-ahrk3y',
+      paint: {
+        'fill-outline-color': 'rgba(0,0,0,0.5)',
+        'fill-color': 'rgba(0,0,0,0.1)'
+      }
+    });
+
+  });
+
+
+  </script>
+</body>
+
+</html>
